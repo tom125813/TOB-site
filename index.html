@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tower of Bedrock - Minecraft MMORPG</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@400;700&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@400;700&family=Montserrat:wght@300;600&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -27,32 +27,115 @@
         }
 
         /* Animations */
-        @keyframes fadeIn {
+        @keyframes fadeUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes copyPop {
-            0% { opacity: 0; transform: scale(0.5) translateY(-20px); }
-            50% { opacity: 1; transform: scale(1.1) translateY(-30px); }
-            100% { opacity: 0; transform: scale(1) translateY(-40px); }
+        @keyframes bannerSlide {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @keyframes bannerFade {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-100%); }
+        }
+
+        @keyframes countdownSlide {
+            0% { transform: translateY(-100%); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes copyTick {
+            0% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1.2) rotate(10deg); }
+            100% { opacity: 1; transform: scale(1) rotate(0deg); }
+        }
+
+        /* Fade-up Animation for All Elements */
+        section.active .container > *,
+        section.active .container .wiki-grid > *,
+        section.active .container .store-grid > *,
+        section.active .container .forum-list > * {
+            animation: fadeUp 0.5s ease-out forwards;
+        }
+
+        /* Banner Container (for background fix) */
+        .banner-container {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 40px;
+            background: rgba(30, 30, 50, 0.95); /* Matches navbar */
+            z-index: 1001;
+            transition: top 0.3s ease;
+        }
+
+        .banner-container.scrolled {
+              top: -40px; /* Moves up when banner hides */
+
+        }
+
+        /* Banner */
+        .banner {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 40px;
+            background: rgba(255, 64, 129, 0.2);
+            z-index: 1002; /* Above container */
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .banner.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .banner.hidden {
+            opacity: 0;
+            transform: translateY(-100%);
+        }
+
+        .banner .ticker {
+            display: inline-block;
+            white-space: nowrap;
+            animation: bannerSlide 20s linear infinite;
+        }
+
+        .banner .ticker span {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1em, 2vw, 1.2em);
+            font-weight: 700;
+            color: #ff4081;
+            margin: 0 clamp(30px, 5vw, 50px);
+            text-transform: uppercase;
         }
 
         /* Navbar */
         .navbar {
             position: fixed;
-            top: 0;
+            top: 40px; /* Below banner when visible */
             width: 100%;
             padding: 10px 20px;
             background: rgba(30, 30, 50, 0.95);
             border-bottom: 2px solid #ff4081;
             z-index: 1000;
             text-align: center;
+            transition: top 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            top: 0; /* Moves up when banner hides */
         }
 
         .navbar .logo {
             font-family: 'Press Start 2P', cursive;
-            font-size: 1.8em;
+            font-size: clamp(1.4em, 4vw, 1.8em);
             color: #ff4081;
             text-transform: uppercase;
             display: block;
@@ -62,7 +145,7 @@
         .nav-links {
             display: flex;
             justify-content: center;
-            gap: 30px;
+            gap: clamp(15px, 3vw, 30px);
             list-style: none;
         }
 
@@ -70,7 +153,7 @@
             color: #e0e0e0;
             text-decoration: none;
             font-family: 'Roboto', sans-serif;
-            font-size: 1.1em;
+            font-size: clamp(0.9em, 2vw, 1.1em);
             font-weight: 600;
             text-transform: uppercase;
             transition: color 0.3s;
@@ -84,7 +167,7 @@
         /* Sections */
         section {
             display: none;
-            padding: 140px 20px 60px;
+            padding: 180px 20px 60px; /* Increased top padding for banner + navbar */
             background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuMjHxIGmVAAAAMElEQVQYV2NgoBJwcnJyanJycvL///8/AQwMTEwsLCwsLCwsLCwsLCwsLCwsLCwsDI4GAV8HAFrpV3gAAAAASUVORK5CYII=') repeat;
             background-size: 16px 16px;
             min-height: 100vh;
@@ -97,7 +180,7 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 50px;
+            padding: 0 clamp(20px, 5vw, 50px);
         }
 
         h1, h2 {
@@ -107,19 +190,19 @@
         }
 
         h1 {
-            font-size: 3em;
+            font-size: clamp(2em, 6vw, 3em);
             text-align: center;
             margin-bottom: 30px;
         }
 
         h2 {
-            font-size: 1.8em;
+            font-size: clamp(1.4em, 4vw, 1.8em);
             margin-bottom: 20px;
         }
 
         p {
             font-family: 'Montserrat', sans-serif;
-            font-size: 1.1em;
+            font-size: clamp(1em, 2.5vw, 1.1em);
             color: #e0e0e0;
         }
 
@@ -133,7 +216,6 @@
             margin-bottom: 60px;
             position: relative;
             overflow: hidden;
-            animation: fadeIn 0.5s ease-out;
         }
 
         #home .hero-section::before {
@@ -145,23 +227,23 @@
             height: 200%;
             background: radial-gradient(circle, rgba(255, 64, 129, 0.2) 0%, transparent 70%);
             z-index: -1;
-
         }
 
-
         #home .hero-section h2 {
-            font-size: 2.5em;
+            font-size: clamp(2em, 5vw, 2.5em);
             margin-bottom: 20px;
             text-shadow: 0 0 10px rgba(255, 64, 129, 0.5);
+            word-wrap: break-word;
         }
 
         #home .hero-section p {
-            font-size: 1.6em;
+            font-size: clamp(1.2em, 3vw, 1.6em);
             color: #b0b0c0;
             margin-bottom: 30px;
             max-width: 800px;
             margin-left: auto;
             margin-right: auto;
+            word-wrap: break-word;
         }
 
         #home .hero-section .server-ip {
@@ -169,11 +251,12 @@
             align-items: center;
             gap: 10px;
             background: rgba(255, 64, 129, 0.3);
-            padding: 12px 25px;
+            padding: clamp(10px, 2vw, 12px) clamp(20px, 3vw, 25px);
             border-radius: 10px;
             cursor: pointer;
             transition: background 0.3s, transform 0.3s;
             position: relative;
+            font-size: clamp(1em, 2.5vw, 1.4em);
         }
 
         #home .hero-section .server-ip:hover {
@@ -183,41 +266,113 @@
 
         #home .hero-section .server-ip span {
             font-family: 'Roboto', sans-serif;
-            font-size: 1.4em;
             color: #ff4081;
         }
 
         #home .hero-section .server-ip i {
-            color: #e0e0e0;
-            font-size: 1.2em;
+            color: #ff4081;
+            font-size: clamp(1em, 2vw, 1.2em);
+            transition: opacity 0.3s, transform 0.3s;
         }
 
-        #home .hero-section .server-ip .copy-confirmation {
-            position: absolute;
-            top: -50px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 64, 129, 0.9);
-            color: #fff;
-            padding: 8px 15px;
-            border-radius: 8px;
-            font-size: 1em;
+        #home .hero-section .server-ip.copied i.fa-copy {
             opacity: 0;
-            pointer-events: none;
-            box-shadow: 0 0 10px rgba(255, 64, 129, 0.5);
+            transform: scale(0);
         }
 
-        #home .hero-section .server-ip.copied .copy-confirmation {
-            animation: copyPop 1.2s ease-out forwards;
+        #home .hero-section .server-ip .tick {
+            position: absolute;
+            color: #ff4081;
+            font-size: clamp(1em, 2vw, 1.2em);
+            opacity: 0;
+            right: clamp(15px, 2vw, 20px);
+            transform: translateY(-50%);
+        }
+
+
+        #home .hero-section .server-ip.copied .tick {
+            opacity: 1;
+            animation: copyTick 0.5s ease-out forwards;
+        }
+
+        #home .events-section {
+            background: rgba(40, 40, 60, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 64, 129, 0.4);
+            text-align: center;
+            margin-bottom: 60px;
+            box-shadow: inset 0 0 20px rgba(255, 64, 129, 0.1);
+        }
+
+        #home .events-section h2 {
+            margin-bottom: 30px;
+            text-shadow: 0 0 5px rgba(255, 64, 129, 0.3);
+        }
+
+        #home .events-section .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        #home .events-section .event-item {
+            background: rgba(50, 50, 70, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 64, 129, 0.2);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        #home .events-section .event-item:hover {
+            transform: scale(1.05) rotateX(5deg) rotateY(5deg);
+        }
+
+        #home .events-section .event-item i {
+            font-size: clamp(2.5em, 5vw, 3em);
+            color: #ff4081;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(255, 64, 129, 0.3);
+        }
+
+        #home .events-section .event-item h3 {
+            font-family: 'Roboto', sans-serif;
+            font-size: clamp(1.2em, 3vw, 1.4em);
+            color: #ff4081;
+            margin-bottom: 15px;
+        }
+
+        #home .events-section .event-item .countdown {
+            font-size: clamp(0.9em, 2vw, 1em);
+            color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            overflow: hidden;
+            height: 1.5em; /* Fixed height to clip animation */
+            position: relative;
+        }
+
+        #home .events-section .event-item .countdown span {
+            background: rgba(255, 64, 129, 0.2);
+            padding: 0px 3px;
+            border-radius: 5px;
+            min-width: 40px;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+            height: 100%;
+        }
+
+        #home .events-section .event-item .countdown span.update {
+            animation: countdownSlide 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Good easing */
         }
 
         #home .changelog-title {
             text-align: center;
             margin-bottom: 40px;
-        }
-
-        #home .container {
-            max-width: 1200px;
         }
 
         #home .changelog-header {
@@ -248,7 +403,6 @@
             border-bottom: 1px solid rgba(255, 64, 129, 0.2);
             transition: background 0.3s, transform 0.3s;
             cursor: pointer;
-            animation: fadeIn 0.5s ease-out;
         }
 
         #home .changelog-entry:hover {
@@ -262,13 +416,13 @@
 
         #home .changelog-entry h3 {
             font-family: 'Roboto', sans-serif;
-            font-size: 1.5em;
+            font-size: clamp(1.2em, 3vw, 1.5em);
             color: #ff4081;
             margin-bottom: 10px;
         }
 
         #home .changelog-entry p {
-            font-size: 1em;
+            font-size: clamp(0.9em, 2vw, 1em);
             color: #b0b0c0;
             margin-bottom: 10px;
         }
@@ -276,7 +430,7 @@
         #home .changelog-entry .read-more {
             color: #ff4081;
             font-family: 'Roboto', sans-serif;
-            font-size: 0.9em;
+            font-size: clamp(0.8em, 2vw, 0.9em);
             text-decoration: none;
             transition: color 0.3s;
         }
@@ -303,11 +457,12 @@
 
         #forums .forum-header h2 {
             margin: 0;
+            font-size: clamp(1.2em, 3vw, 1.8em);
         }
 
         #forums .forum-header .stats {
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.9em;
+            font-size: clamp(0.8em, 2vw, 0.9em);
             color: #b0b0c0;
         }
 
@@ -340,20 +495,22 @@
 
         #forums .thread-info h3 {
             font-family: 'Roboto', sans-serif;
-            font-size: 1.2em;
+            font-size: clamp(1em, 2.5vw, 1.2em);
             color: #ff4081;
             margin-bottom: 5px;
+            word-wrap: break-word;
         }
 
         #forums .thread-info p {
-            font-size: 0.9em;
+            font-size: clamp(0.8em, 2vw, 0.9em);
             color: #b0b0c0;
+            word-wrap: break-word;
         }
 
         #forums .thread-stats {
             text-align: right;
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.9em;
+            font-size: clamp(0.8em, 2vw, 0.9em);
             color: #e0e0e0;
         }
 
@@ -377,6 +534,12 @@
             gap: 25px;
         }
 
+        @media (max-width: 768px) {
+            #wiki .wiki-grid {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
+            }
+        }
+
         #wiki .wiki-item {
             background: rgba(40, 40, 60, 0.9);
             padding: 15px;
@@ -388,8 +551,8 @@
             aspect-ratio: 1 / 1;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            animation: fadeIn 0.5s ease-out;
+            justify-content: center;
+            align-items: center;
         }
 
         #wiki .wiki-item:hover {
@@ -398,7 +561,7 @@
         }
 
         #wiki .wiki-item i {
-            font-size: clamp(6em, 10vw,  4em); /* Full height on mobile, max 3em */
+            font-size: clamp(2em, 10vw, 3em);
             color: #ff4081;
             margin-bottom: 10px;
             line-height: 1;
@@ -406,13 +569,13 @@
 
         #wiki .wiki-item h3 {
             font-family: 'Roboto', sans-serif;
-            font-size: 1.2em;
+            font-size: clamp(1em, 2.5vw, 1.2em);
             color: #ff4081;
             margin: 0;
         }
 
         #wiki .wiki-item p {
-            font-size: 0.9em;
+            font-size: clamp(0.8em, 2vw, 0.9em);
             color: #b0b0c0;
             margin: 0;
         }
@@ -430,7 +593,6 @@
             padding: 30px;
             border-radius: 10px;
             border: 1px solid rgba(255, 64, 129, 0.3);
-            animation: fadeIn 0.5s ease-out;
             position: relative;
         }
 
@@ -453,25 +615,25 @@
         }
 
         #wiki .sub-wiki-content .back-btn i {
-            font-size: 1.2em;
+            font-size: clamp(1em, 2vw, 1.2em);
             color: #ff4081;
         }
 
         #wiki .sub-wiki-content .back-btn span {
             font-family: 'Roboto', sans-serif;
-            font-size: 1em;
+            font-size: clamp(0.9em, 2vw, 1em);
             color: #ff4081;
         }
 
         #wiki .sub-wiki-content h3 {
             font-family: 'Roboto', sans-serif;
-            font-size: 1.8em;
+            font-size: clamp(1.4em, 3vw, 1.8em);
             color: #ff4081;
             margin-bottom: 20px;
         }
 
         #wiki .sub-wiki-content p {
-            font-size: 1.1em;
+            font-size: clamp(0.9em, 2vw, 1.1em);
             color: #e0e0e0;
             margin-bottom: 15px;
         }
@@ -484,79 +646,79 @@
 
         #store .store-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
         }
 
         #store .store-item {
-            background: rgba(40, 40, 60, 0.95);
+            background: rgba(40, 40, 60, 0.9);
             padding: 20px;
-            border-radius: 12px;
+            border-radius: 15px;
             border: 2px solid rgba(255, 64, 129, 0.4);
             text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
             position: relative;
             overflow: hidden;
+            transition: transform 0.3s;
+            min-height: 350px; /* Reduced height */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 10px; /* Consistent spacing */
         }
 
         #store .store-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 15px rgba(255, 64, 129, 0.5);
+            transform: translateY(-10px);
         }
 
-        #store .store-item::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255, 64, 129, 0.2) 0%, transparent 70%);
-            z-index: -1;
-            animation: rotate 10s linear infinite;
+        #store .store-item i.fa-gem {
+            font-size: clamp(2.5em, 6vw, 3em);
+            color: #ff4081;
+            margin-bottom: 10px;
+            transition: transform 0.3s;
         }
 
-        #store .store-item img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            border: 1px solid rgba(255, 64, 129, 0.6);
+        #store .store-item:hover i.fa-gem {
+            transform: rotate(10deg) scale(1.05);
+        }
+
+        #store .store-item h3 {
+            font-family: 'Roboto', sans-serif;
+            font-size: clamp(1.2em, 3vw, 1.4em);
+            color: #ff4081;
+            margin-bottom: 10px;
+        }
+
+        #store .store-item p {
+            font-size: clamp(0.9em, 2vw, 1em);
+            color: #b0b0c0;
+            margin-bottom: 10px;
         }
 
         #store .store-item .price {
             font-family: 'Roboto', sans-serif;
-            font-size: 1.5em;
-            color: #ff4081;
+            font-size: clamp(1.4em, 3vw, 1.6em);
+            color: #e0e0e0;
             font-weight: 700;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         #store .store-item button {
-            padding: 10px 25px;
-            background: #ff4081;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
+            padding: clamp(10px, 2vw, 12px) clamp(25px, 4vw, 30px);
+            background: rgba(255, 64, 129, 0.3);
+            color: #ff4081;
+            border: 1px solid rgba(255, 64, 129, 0.5);
+            border-radius: 20px;
             font-family: 'Roboto', sans-serif;
-            font-size: 1.1em;
-            font-weight: 700;
+            font-size: clamp(1em, 2.5vw, 1.2em);
+            font-weight: 600;
             cursor: pointer;
             transition: background 0.3s, transform 0.3s;
         }
 
         #store .store-item button:hover {
-            background: #e03570;
+            background: rgba(255, 64, 129, 0.5);
             transform: scale(1.05);
-        }
-
-        #store .store-tagline {
-            text-align: center;
-            margin-top: 40px;
-            font-family: 'Roboto', sans-serif;
-            font-size: 1.2em;
-            color: #b0b0c0;
         }
 
         /* Footer */
@@ -571,7 +733,7 @@
 
         footer p {
             font-family: 'Montserrat', sans-serif;
-            font-size: 1em;
+            font-size: clamp(0.9em, 2vw, 1em);
             color: #b0b0c0;
         }
 
@@ -581,7 +743,7 @@
 
         footer .socials a {
             color: #e0e0e0;
-            font-size: 1.8em;
+            font-size: clamp(1.5em, 3vw, 1.8em);
             margin: 0 15px;
             transition: color 0.3s;
         }
@@ -596,7 +758,7 @@
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            .wiki-grid {
+            #home .events-section .events-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
@@ -606,41 +768,41 @@
                 padding: 10px 15px;
             }
 
-            .navbar .logo {
-                font-size: 1.4em;
-            }
-
             .nav-links {
-                gap: 15px;
+                gap: 10px;
             }
 
-            .nav-links a {
-                font-size: 0.9em;
-            }
-
-            h1 {
-                font-size: 2em;
-            }
-
-            p {
-                font-size: 1em;
-            }
-
-            #store .store-grid, .wiki-grid {
+            #store .store-grid {
                 grid-template-columns: 1fr;
             }
 
-            #home .hero-section h2 {
-                font-size: 2em;
+            #home .events-section .events-grid {
+                grid-template-columns: 1fr;
             }
 
-            #home .hero-section p {
-                font-size: 1.2em;
+            #store .store-item {
+                min-height: 300px; /* Further reduced for mobile */
             }
         }
     </style>
 </head>
 <body>
+    <div class="banner-container">
+        <div class="banner visible">
+            <div class="ticker">
+                <span>DOUBLE EXP WEEKEND</span>
+                <span>THE OUTPOST UPDATE</span>
+                <span>20% GEM SALE</span>
+                <span>DOUBLE EXP WEEKEND</span>
+                <span>THE OUTPOST UPDATE</span>
+                <span>20% GEM SALE</span>
+                <span>DOUBLE EXP WEEKEND</span>
+                <span>THE OUTPOST UPDATE</span>
+                <span>20% GEM SALE</span>
+            </div>
+        </div>
+    </div>
+
     <nav class="navbar">
         <h1 class="logo">Tower of Bedrock</h1>
         <ul class="nav-links">
@@ -654,19 +816,46 @@
     <section id="home" class="active">
         <div class="container">
             <div class="hero-section">
-                <h2>Tower of Bedrock</h2>
+                <h2>JOIN THE JOURNEY</h2>
                 <p>Unleash your adventure in the ultimate Minecraft MMORPG—conquer towering floors, forge epic gear, and raid with your crew!</p>
                 <div class="server-ip" onclick="copyIP(this)">
                     <span>play.towerofbedrock.com</span>
                     <i class="fas fa-copy"></i>
-                    <div class="copy-confirmation">Copied!</div>
+                    <i class="fas fa-check tick"></i>
                 </div>
             </div>
-        </div>
-        <div class="changelog-title">
-            <h1>Recent Changelogs</h1>
-        </div>
-        <div class="container">
+            <div class="events-section">
+                <h2>Featured Events</h2>
+                <div class="events-grid">
+                    <div class="event-item">
+                        <i class="fas fa-star"></i>
+                        <h3>Double EXP Weekend</h3>
+                        <div class="countdown" id="double-exp-countdown">
+                            <span class="label">Ends in:</span>
+                            <span class="hours">37</span>:<span class="minutes">00</span>:<span class="seconds">00</span>
+                        </div>
+                    </div>
+                    <div class="event-item">
+                        <i class="fas fa-flag-checkered"></i>
+                        <h3>Outpost Siege</h3>
+                        <div class="countdown" id="outpost-countdown">
+                            <span class="label">Starts in:</span>
+                            <span class="hours">06</span>:<span class="minutes">00</span>:<span class="seconds">00</span>
+                        </div>
+                    </div>
+                    <div class="event-item">
+                        <i class="fas fa-gem"></i>
+                        <h3>Gem Sale</h3>
+                        <div class="countdown" id="gem-sale-countdown">
+                            <span class="label">Ends in:</span>
+                            <span class="hours">48</span>:<span class="minutes">00</span>:<span class="seconds">00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="changelog-title">
+                <h1>Recent Changelogs</h1>
+            </div>
             <div class="changelog-header">
                 <h2>Latest Updates</h2>
             </div>
@@ -758,6 +947,58 @@
                     <div class="thread-stats">
                         <span>Replies: 32</span>
                         <span>Views: 1.8K</span>
+                    </div>
+                </div>
+            </div>
+            <div class="forum-header" style="margin-top: 40px;">
+                <h2>Guides & Strategies</h2>
+                <div class="stats">Threads: 892 | Posts: 7,654</div>
+            </div>
+            <div class="forum-list">
+                <div class="forum-thread">
+                    <div class="thread-info">
+                        <h3>Ultimate Fishing Guide</h3>
+                        <p>By FishMaster | Started: Feb 24, 2025</p>
+                    </div>
+                    <div class="thread-stats">
+                        <span>Replies: 67</span>
+                        <span>Views: 3.9K</span>
+                    </div>
+                </div>
+                <div class="forum-thread">
+                    <div class="thread-info">
+                        <h3>Best Enchanting Setups</h3>
+                        <p>By EnchanterX | Started: Feb 23, 2025</p>
+                    </div>
+                    <div class="thread-stats">
+                        <span>Replies: 54</span>
+                        <span>Views: 2.8K</span>
+                    </div>
+                </div>
+            </div>
+            <div class="forum-header" style="margin-top: 40px;">
+                <h2>Bug Reports</h2>
+                <div class="stats">Threads: 345 | Posts: 2,109</div>
+            </div>
+            <div class="forum-list">
+                <div class="forum-thread">
+                    <div class="thread-info">
+                        <h3>Generator Glitch on Floor 5</h3>
+                        <p>By BugHunter | Started: Feb 26, 2025</p>
+                    </div>
+                    <div class="thread-stats">
+                        <span>Replies: 23</span>
+                        <span>Views: 1.5K</span>
+                    </div>
+                </div>
+                <div class="forum-thread">
+                    <div class="thread-info">
+                        <h3>Pet Boost Not Applying</h3>
+                        <p>By PetLover | Started: Feb 25, 2025</p>
+                    </div>
+                    <div class="thread-stats">
+                        <span>Replies: 19</span>
+                        <span>Views: 1.2K</span>
                     </div>
                 </div>
             </div>
@@ -1099,28 +1340,47 @@
             </div>
             <div class="store-grid">
                 <div class="store-item">
-                    <img src="https://placehold.co/320x200?text=100+Gems" alt="Small Gem Bundle">
+                    <i class="fas fa-gem"></i>
+                    <h3>Starter Pack</h3>
+                    <p>Perfect for new adventurers! 100 Gems.</p>
                     <div class="price">$4.99</div>
                     <button onclick="alert('Purchase coming soon!')">Buy Now</button>
                 </div>
                 <div class="store-item">
-                    <img src="https://placehold.co/320x200?text=500+Gems+%2B100" alt="Medium Gem Bundle">
+                    <i class="fas fa-gem"></i>
+                    <h3>Explorer’s Bundle</h3>
+                    <p>Boost your journey! 500 + 100 Gems.</p>
                     <div class="price">$12.99</div>
                     <button onclick="alert('Purchase coming soon!')">Buy Now</button>
                 </div>
                 <div class="store-item">
-                    <img src="https://placehold.co/320x200?text=1200+Gems+%2B300" alt="Large Gem Bundle">
+                    <i class="fas fa-gem"></i>
+                    <h3>Warrior’s Hoard</h3>
+                    <p>Power up! 1200 + 300 Gems.</p>
                     <div class="price">$34.99</div>
                     <button onclick="alert('Purchase coming soon!')">Buy Now</button>
                 </div>
                 <div class="store-item">
-                    <img src="https://placehold.co/320x200?text=2500+Gems+%2B700" alt="Mega Gem Bundle">
+                    <i class="fas fa-gem"></i>
+                    <h3>Legend’s Vault</h3>
+                    <p>Dominate! 2500 + 700 Gems.</p>
                     <div class="price">$64.99</div>
                     <button onclick="alert('Purchase coming soon!')">Buy Now</button>
                 </div>
-            </div>
-            <div class="store-tagline">
-                Boost your ascent—grab some gems today!
+                <div class="store-item">
+                    <i class="fas fa-gem"></i>
+                    <h3>Titan’s Treasure</h3>
+                    <p>Unleash power! 5000 + 1500 Gems.</p>
+                    <div class="price">$99.99</div>
+                    <button onclick="alert('Purchase coming soon!')">Buy Now</button>
+                </div>
+                <div class="store-item">
+                    <i class="fas fa-gem"></i>
+                    <h3>Overlord’s Cache</h3>
+                    <p>Rule all! 10000 + 3000 Gems.</p>
+                    <div class="price">$149.99</div>
+                    <button onclick="alert('Purchase coming soon!')">Buy Now</button>
+                </div>
             </div>
         </div>
     </section>
@@ -1135,9 +1395,12 @@
     </footer>
 
     <script>
-        // Navigation
+        // Navigation with Scroll to Top
         const navLinks = document.querySelectorAll('.nav-links a');
         const sections = document.querySelectorAll('section');
+        const banner = document.querySelector('.banner');
+        const navbar = document.querySelector('.navbar');
+        const navbarCont = document.querySelector('.banner-container');
 
         navLinks.forEach(link => {
             link.addEventListener('click', (e) => {
@@ -1153,20 +1416,27 @@
                 link.classList.add('active');
                 document.querySelectorAll('.sub-wiki').forEach(sub => sub.classList.remove('active'));
                 document.querySelector('#wiki .wiki-grid').style.display = 'grid';
+                window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top
             });
         });
 
-        // Sub-Wiki Toggle
+        // Sub-Wiki Toggle with Forced Scroll to Top
         function showSubWiki(id) {
             document.querySelector('#wiki .wiki-grid').style.display = 'none';
             document.querySelectorAll('.sub-wiki').forEach(sub => sub.classList.remove('active'));
             document.getElementById(id).classList.add('active');
+            setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' }); // Forced scroll after slight delay
+            }, 10);
         }
 
         function backToMainWiki(event) {
             event.preventDefault();
             document.querySelectorAll('.sub-wiki').forEach(sub => sub.classList.remove('active'));
             document.querySelector('#wiki .wiki-grid').style.display = 'grid';
+            setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' }); // Forced scroll after slight delay
+            }, 10);
         }
 
         // IP Copy Animation
@@ -1175,8 +1445,65 @@
             element.classList.add('copied');
             setTimeout(() => {
                 element.classList.remove('copied');
-            }, 1200); // Matches animation duration
+            }, 2000); // Extended duration for visibility
         }
+
+        // Banner and Navbar Scroll Behavior
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                banner.classList.remove('visible');
+                banner.classList.add('hidden');
+                navbar.classList.add('scrolled');
+                navbarCont.classList.add('scrolled');
+            } else {
+                banner.classList.remove('hidden');
+                banner.classList.add('visible');
+                navbar.classList.remove('scrolled');
+                navbarCont.classList.remove('scrolled');
+            }
+        });
+
+        // Countdown Timers with Slide Animation
+        function startCountdown(elementId, hours, label) {
+            let timeLeft = hours * 3600; // Convert hours to seconds
+            const countdownElement = document.getElementById(elementId);
+            const hoursSpan = countdownElement.querySelector('.hours');
+            const minutesSpan = countdownElement.querySelector('.minutes');
+            const secondsSpan = countdownElement.querySelector('.seconds');
+
+            setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    const hoursLeft = Math.floor(timeLeft / 3600);
+                    const minutesLeft = Math.floor((timeLeft % 3600) / 60);
+                    const secondsLeft = timeLeft % 60;
+
+                    // Update and animate only when values change
+                    if (hoursSpan.textContent !== String(hoursLeft).padStart(2, '0')) {
+                        hoursSpan.classList.add('update');
+                        hoursSpan.textContent = String(hoursLeft).padStart(2, '0');
+                        setTimeout(() => hoursSpan.classList.remove('update'), 500);
+                    }
+                    if (minutesSpan.textContent !== String(minutesLeft).padStart(2, '0')) {
+                        minutesSpan.classList.add('update');
+                        minutesSpan.textContent = String(minutesLeft).padStart(2, '0');
+                        setTimeout(() => minutesSpan.classList.remove('update'), 500);
+                    }
+                    if (secondsSpan.textContent !== String(secondsLeft).padStart(2, '0')) {
+                        secondsSpan.classList.add('update');
+                        secondsSpan.textContent = String(secondsLeft).padStart(2, '0');
+                        setTimeout(() => secondsSpan.classList.remove('update'), 500);
+                    }
+                } else {
+                    countdownElement.innerHTML = `${label}: Ended`;
+                }
+            }, 1000);
+        }
+
+        // Start countdowns with demo deadlines
+        startCountdown('double-exp-countdown', 37, 'Ends in');
+        startCountdown('outpost-countdown', 6, 'Starts in');
+        startCountdown('gem-sale-countdown', 48, 'Ends in');
     </script>
 </body>
 </html>
