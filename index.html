@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tower of Bedrock - Minecraft MMORPG</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@400;700&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #1e1e2f;
+            color: #e0e0e0;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        ::selection {
+            background: #ff4081;
+            color: #fff;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes copyPop {
+            0% { opacity: 0; transform: scale(0.5) translateY(-20px); }
+            50% { opacity: 1; transform: scale(1.1) translateY(-30px); }
+            100% { opacity: 0; transform: scale(1) translateY(-40px); }
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 10px 20px;
+            background: rgba(30, 30, 50, 0.95);
+            border-bottom: 2px solid #ff4081;
+            z-index: 1000;
+            text-align: center;
+        }
+
+        .navbar .logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.8em;
+            color: #ff4081;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.1em;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #ff4081;
+        }
+
+        /* Sections */
+        section {
+            display: none;
+            padding: 140px 20px 60px;
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuMjHxIGmVAAAAMElEQVQYV2NgoBJwcnJyanJycvL///8/AQwMTEwsLCwsLCwsLCwsLCwsLCwsLCwsDI4GAV8HAFrpV3gAAAAASUVORK5CYII=') repeat;
+            background-size: 16px 16px;
+            min-height: 100vh;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 50px;
+        }
+
+        h1, h2 {
+            font-family: 'Press Start 2P', cursive;
+            color: #ff4081;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            font-size: 3em;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1em;
+            color: #e0e0e0;
+        }
+
+        /* Home */
+        #home .hero-section {
+            background: radial-gradient(circle, rgba(255, 64, 129, 0.2) 0%, transparent 100%);
+            padding: 40px;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 64, 129, 0.4);
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        #home .hero-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 64, 129, 0.2) 0%, transparent 70%);
+            z-index: -1;
+
+        }
+
+
+        #home .hero-section h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 64, 129, 0.5);
+        }
+
+        #home .hero-section p {
+            font-size: 1.6em;
+            color: #b0b0c0;
+            margin-bottom: 30px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #home .hero-section .server-ip {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 64, 129, 0.3);
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+            position: relative;
+        }
+
+        #home .hero-section .server-ip:hover {
+            background: rgba(255, 64, 129, 0.5);
+            transform: scale(1.05);
+        }
+
+        #home .hero-section .server-ip span {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.4em;
+            color: #ff4081;
+        }
+
+        #home .hero-section .server-ip i {
+            color: #e0e0e0;
+            font-size: 1.2em;
+        }
+
+        #home .hero-section .server-ip .copy-confirmation {
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 64, 129, 0.9);
+            color: #fff;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 1em;
+            opacity: 0;
+            pointer-events: none;
+            box-shadow: 0 0 10px rgba(255, 64, 129, 0.5);
+        }
+
+        #home .hero-section .server-ip.copied .copy-confirmation {
+            animation: copyPop 1.2s ease-out forwards;
+        }
+
+        #home .changelog-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        #home .container {
+            max-width: 1200px;
+        }
+
+        #home .changelog-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(40, 40, 60, 0.9);
+            padding: 15px 20px;
+            border-radius: 10px 10px 0 0;
+            border: 1px solid rgba(255, 64, 129, 0.3);
+            border-bottom: none;
+        }
+
+        #home .changelog-header h2 {
+            margin: 0;
+        }
+
+        #home .changelog-list {
+            background: rgba(40, 40, 60, 0.9);
+            border: 1px solid rgba(255, 64, 129, 0.3);
+            border-top: none;
+            border-radius: 0 0 10px 10px;
+            overflow: hidden;
+        }
+
+        #home .changelog-entry {
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255, 64, 129, 0.2);
+            transition: background 0.3s, transform 0.3s;
+            cursor: pointer;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        #home .changelog-entry:hover {
+            background: rgba(50, 50, 70, 0.9);
+            transform: translateX(5px);
+        }
+
+        #home .changelog-entry:last-child {
+            border-bottom: none;
+        }
+
+        #home .changelog-entry h3 {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.5em;
+            color: #ff4081;
+            margin-bottom: 10px;
+        }
+
+        #home .changelog-entry p {
+            font-size: 1em;
+            color: #b0b0c0;
+            margin-bottom: 10px;
+        }
+
+        #home .changelog-entry .read-more {
+            color: #ff4081;
+            font-family: 'Roboto', sans-serif;
+            font-size: 0.9em;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        #home .changelog-entry .read-more:hover {
+            color: #e03570;
+        }
+
+        /* Forums */
+        #forums .container {
+            max-width: 1200px;
+        }
+
+        #forums .forum-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(40, 40, 60, 0.9);
+            padding: 15px 20px;
+            border-radius: 10px 10px 0 0;
+            border: 1px solid rgba(255, 64, 129, 0.3);
+            border-bottom: none;
+        }
+
+        #forums .forum-header h2 {
+            margin: 0;
+        }
+
+        #forums .forum-header .stats {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9em;
+            color: #b0b0c0;
+        }
+
+        #forums .forum-list {
+            background: rgba(40, 40, 60, 0.9);
+            border: 1px solid rgba(255, 64, 129, 0.3);
+            border-top: none;
+            border-radius: 0 0 10px 10px;
+            overflow: hidden;
+        }
+
+        #forums .forum-thread {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255, 64, 129, 0.2);
+            transition: background 0.3s, transform 0.3s;
+            cursor: pointer;
+        }
+
+        #forums .forum-thread:hover {
+            background: rgba(50, 50, 70, 0.9);
+            transform: translateX(5px);
+        }
+
+        #forums .forum-thread:last-child {
+            border-bottom: none;
+        }
+
+        #forums .thread-info h3 {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.2em;
+            color: #ff4081;
+            margin-bottom: 5px;
+        }
+
+        #forums .thread-info p {
+            font-size: 0.9em;
+            color: #b0b0c0;
+        }
+
+        #forums .thread-stats {
+            text-align: right;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9em;
+            color: #e0e0e0;
+        }
+
+        #forums .thread-stats span {
+            display: block;
+            color: #b0b0c0;
+        }
+
+        /* Wiki */
+        #wiki .main-wiki {
+            display: block;
+        }
+
+        #wiki .main-wiki.active {
+            display: block;
+        }
+
+        #wiki .wiki-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+        }
+
+        #wiki .wiki-item {
+            background: rgba(40, 40, 60, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 64, 129, 0.3);
+            transition: transform 0.3s, background 0.3s;
+            cursor: pointer;
+            text-align: center;
+            aspect-ratio: 1 / 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        #wiki .wiki-item:hover {
+            transform: translateY(-5px);
+            background: rgba(50, 50, 70, 0.9);
+        }
+
+        #wiki .wiki-item i {
+            font-size: clamp(6em, 10vw,  4em); /* Full height on mobile, max 3em */
+            color: #ff4081;
+            margin-bottom: 10px;
+            line-height: 1;
+        }
+
+        #wiki .wiki-item h3 {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.2em;
+            color: #ff4081;
+            margin: 0;
+        }
+
+        #wiki .wiki-item p {
+            font-size: 0.9em;
+            color: #b0b0c0;
+            margin: 0;
+        }
+
+        #wiki .sub-wiki {
+            display: none;
+        }
+
+        #wiki .sub-wiki.active {
+            display: block;
+        }
+
+        #wiki .sub-wiki-content {
+            background: rgba(40, 40, 60, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 64, 129, 0.3);
+            animation: fadeIn 0.5s ease-out;
+            position: relative;
+        }
+
+        #wiki .sub-wiki-content .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: rgba(255, 64, 129, 0.3);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 64, 129, 0.5);
+            transition: background 0.3s, transform 0.3s;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        #wiki .sub-wiki-content .back-btn:hover {
+            background: rgba(255, 64, 129, 0.5);
+            transform: scale(1.05);
+        }
+
+        #wiki .sub-wiki-content .back-btn i {
+            font-size: 1.2em;
+            color: #ff4081;
+        }
+
+        #wiki .sub-wiki-content .back-btn span {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1em;
+            color: #ff4081;
+        }
+
+        #wiki .sub-wiki-content h3 {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.8em;
+            color: #ff4081;
+            margin-bottom: 20px;
+        }
+
+        #wiki .sub-wiki-content p {
+            font-size: 1.1em;
+            color: #e0e0e0;
+            margin-bottom: 15px;
+        }
+
+        /* Store */
+        #store .store-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        #store .store-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+
+        #store .store-item {
+            background: rgba(40, 40, 60, 0.95);
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid rgba(255, 64, 129, 0.4);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #store .store-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(255, 64, 129, 0.5);
+        }
+
+        #store .store-item::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 64, 129, 0.2) 0%, transparent 70%);
+            z-index: -1;
+            animation: rotate 10s linear infinite;
+        }
+
+        #store .store-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 64, 129, 0.6);
+        }
+
+        #store .store-item .price {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.5em;
+            color: #ff4081;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        #store .store-item button {
+            padding: 10px 25px;
+            background: #ff4081;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        #store .store-item button:hover {
+            background: #e03570;
+            transform: scale(1.05);
+        }
+
+        #store .store-tagline {
+            text-align: center;
+            margin-top: 40px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.2em;
+            color: #b0b0c0;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px;
+            background: rgba(30, 30, 50, 0.95);
+            border-top: 2px solid #ff4081;
+            position: relative;
+            z-index: 1;
+        }
+
+        footer p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1em;
+            color: #b0b0c0;
+        }
+
+        footer .socials {
+            margin-top: 20px;
+        }
+
+        footer .socials a {
+            color: #e0e0e0;
+            font-size: 1.8em;
+            margin: 0 15px;
+            transition: color 0.3s;
+        }
+
+        footer .socials a:hover {
+            color: #ff4081;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            #store .store-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .wiki-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 10px 15px;
+            }
+
+            .navbar .logo {
+                font-size: 1.4em;
+            }
+
+            .nav-links {
+                gap: 15px;
+            }
+
+            .nav-links a {
+                font-size: 0.9em;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            p {
+                font-size: 1em;
+            }
+
+            #store .store-grid, .wiki-grid {
+                grid-template-columns: 1fr;
+            }
+
+            #home .hero-section h2 {
+                font-size: 2em;
+            }
+
+            #home .hero-section p {
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <h1 class="logo">Tower of Bedrock</h1>
+        <ul class="nav-links">
+            <li><a href="#home" class="active">Home</a></li>
+            <li><a href="#forums">Forums</a></li>
+            <li><a href="#wiki">Wiki</a></li>
+            <li><a href="#store">Store</a></li>
+        </ul>
+    </nav>
+
+    <section id="home" class="active">
+        <div class="container">
+            <div class="hero-section">
+                <h2>Tower of Bedrock</h2>
+                <p>Unleash your adventure in the ultimate Minecraft MMORPG—conquer towering floors, forge epic gear, and raid with your crew!</p>
+                <div class="server-ip" onclick="copyIP(this)">
+                    <span>play.towerofbedrock.com</span>
+                    <i class="fas fa-copy"></i>
+                    <div class="copy-confirmation">Copied!</div>
+                </div>
+            </div>
+        </div>
+        <div class="changelog-title">
+            <h1>Recent Changelogs</h1>
+        </div>
+        <div class="container">
+            <div class="changelog-header">
+                <h2>Latest Updates</h2>
+            </div>
+            <div class="changelog-list">
+                <div class="changelog-entry">
+                    <h3>Patch 1.3 - "Floor 7 Unleashed"</h3>
+                    <p><strong>Date:</strong> Feb 27, 2025</p>
+                    <p>- Introduced Floor 7 with "Nether Wraith" mobs.</p>
+                    <p>- Added "Blaze Strike" enchantment.</p>
+                    <a href="#" class="read-more">Read More</a>
+                </div>
+                <div class="changelog-entry">
+                    <h3>Patch 1.2 - "Guild Wars"</h3>
+                    <p><strong>Date:</strong> Feb 20, 2025</p>
+                    <p>- Guild overhaul with shared vaults.</p>
+                    <p>- Outposts added for rare drops.</p>
+                    <a href="#" class="read-more">Read More</a>
+                </div>
+                <div class="changelog-entry">
+                    <h3>Patch 1.1 - "Energy Boost"</h3>
+                    <p><strong>Date:</strong> Feb 15, 2025</p>
+                    <p>- Energy Bar cap raised to 5000.</p>
+                    <p>- New "Gem Pickaxe" item.</p>
+                    <a href="#" class="read-more">Read More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="forums">
+        <div class="container">
+            <h1>Forums</h1>
+            <div class="forum-header">
+                <h2>General Discussion</h2>
+                <div class="stats">Threads: 1,245 | Posts: 12,890</div>
+            </div>
+            <div class="forum-list">
+                <div class="forum-thread">
+                    <div class="thread-info">
+                        <h3>Welcome to Tower of Bedrock!</h3>
+                        <p>By Admin | Started: Feb 27, 2025</p>
+                    </div>
+                    <div class="thread-stats">
+                        <span>Replies: 342</span>
+                        <span>Views: 15.2K</span>
+                    </div>
+                </div>
+                <div class="forum-thread">
+                    <div class="thread-info">
+                        <h3>Best Vault Defense Strategies</h3>
+                        <p>By MinerX | Started: Feb 26, 2025</p>
+                    </div>
+                    <div class="thread-stats">
+                        <span>Replies: 89</span>
+                        <span>Views: 4.7K</span>
+                    </div>
+                </div>
+                <div class="forum-thread">
+                    <div class="thread-info">
+                        <h3>Upcoming Floor 7 Reveal</h3>
+                        <p>By DevTeam | Started: Feb 25, 2025</p>
+                    </div>
+                    <div class="thread-stats">
+                        <span>Replies: 210</span>
+                        <span>Views: 9.8K</span>
+                    </div>
+                </div>
+            </div>
+            <div class="forum-header" style="margin-top: 40px;">
+                <h2>Guild Recruitment</h2>
+                <div class="stats">Threads: 678 | Posts: 5,432</div>
+            </div>
+            <div class="forum-list">
+                <div class="forum-thread">
+                    <div class="thread-info">
+                        <h3>Looking for Raiders - Lvl 50+</h3>
+                        <p>By GuildMasterZ | Started: Feb 26, 2025</p>
+                    </div>
+                    <div class="thread-stats">
+                        <span>Replies: 45</span>
+                        <span>Views: 2.1K</span>
+                    </div>
+                </div>
+                <div class="forum-thread">
+                    <div class="thread-info">
+                        <h3>New Guild: Bedrock Legends</h3>
+                        <p>By Legend27 | Started: Feb 25, 2025</p>
+                    </div>
+                    <div class="thread-stats">
+                        <span>Replies: 32</span>
+                        <span>Views: 1.8K</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="wiki">
+        <div class="container">
+            <h1>Wiki</h1>
+            <div class="main-wiki active">
+                <div class="wiki-grid">
+                    <div class="wiki-item" onclick="showSubWiki('floors')">
+                        <i class="fas fa-layer-group"></i>
+                        <div>
+                            <h3>Floors</h3>
+                            <p>Unlock tiers</p>
+                        </div>
+                    </div>
+                    <div class="wiki-item" onclick="showSubWiki('progression')">
+                        <i class="fas fa-chart-line"></i>
+                        <div>
+                            <h3>Progression</h3>
+                            <p>Level up</p>
+                        </div>
+                    </div>
+                    <div class="wiki-item" onclick="showSubWiki('enchanting')">
+                        <i class="fas fa-magic"></i>
+                        <div>
+                            <h3>Enchanting</h3>
+                            <p>Power gear</p>
+                        </div>
+                    </div>
+                    <div class="wiki-item" onclick="showSubWiki('items')">
+                        <i class="fas fa-box-open"></i>
+                        <div>
+                            <h3>Items</h3>
+                            <p>New gear</p>
+                        </div>
+                    </div>
+                    <div class="wiki-item" onclick="showSubWiki('recipes')">
+                        <i class="fas fa-tools"></i>
+                        <div>
+                            <h3>Recipes</h3>
+                            <p>Craft items</p>
+                        </div>
+                    </div>
+                    <div class="wiki-item" onclick="showSubWiki('mobs')">
+                        <i class="fas fa-spider"></i>
+                        <div>
+                            <h3>Mobs</h3>
+                            <p>Fight enemies</p>
+                        </div>
+                    </div>
+                    <div class="wiki-item" onclick="showSubWiki('fishing')">
+                        <i class="fas fa-fish"></i>
+                        <div>
+                            <h3>Fishing</h3>
+                            <p>Catch loot</p>
+                        </div>
+                    </div>
+                    <div class="wiki-item" onclick="showSubWiki('vaults')">
+                        <i class="fas fa-lock"></i>
+                        <div>
+                            <h3>Vaults</h3>
+                            <p>Secure loot</p>
+                        </div>
+                    </div>
+                    <div class="wiki-item" onclick="showSubWiki('raiding')">
+                        <i class="fas fa-skull-crossbones"></i>
+                        <div>
+                            <h3>Raiding</h3>
+                            <p>Steal loot</p>
+                        </div>
+                    </div>
+                    <div class="wiki-item" onclick="showSubWiki('guilds')">
+                        <i class="fas fa-users"></i>
+                        <div>
+                            <h3>Guilds</h3>
+                            <p>Team up</p>
+                        </div>
+                    </div>
+                    <div class="wiki-item" onclick="showSubWiki('guards')">
+                        <i class="fas fa-shield-alt"></i>
+                        <div>
+                            <h3>Guards</h3>
+                            <p>Defend vaults</p>
+                        </div>
+                    </div>
+                    <div class="wiki-item" onclick="showSubWiki('generators')">
+                        <i class="fas fa-cogs"></i>
+                        <div>
+                            <h3>Generators</h3>
+                            <p>Auto-mine</p>
+                        </div>
+                    </div>
+                    <div class="wiki-item" onclick="showSubWiki('pets')">
+                        <i class="fas fa-paw"></i>
+                        <div>
+                            <h3>Pets</h3>
+                            <p>Get boosts</p>
+                        </div>
+                    </div>
+                    <div class="wiki-item" onclick="showSubWiki('leverages')">
+                        <i class="fas fa-arrow-up"></i>
+                        <div>
+                            <h3>Leverages</h3>
+                            <p>EXP boosts</p>
+                        </div>
+                    </div>
+                    <div class="wiki-item" onclick="showSubWiki('outposts')">
+                        <i class="fas fa-flag"></i>
+                        <div>
+                            <h3>Outposts</h3>
+                            <p>Guild battles</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sub-Wikis with Demo Text -->
+            <div id="floors" class="sub-wiki">
+                <div class="sub-wiki-content">
+                    <div class="back-btn" onclick="backToMainWiki(event)">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Back</span>
+                    </div>
+                    <h2>Floors</h2>
+                    <p>Explore over 10 floors, each unlocking new challenges and rewards as you ascend.</p>
+                    <h3>Unlocking</h3>
+                    <p>Reach level thresholds (e.g., Level 5 for Floor 2) or complete floor-specific quests.</p>
+                    <h3>Floor Examples</h3>
+                    <p>- <strong>Floor 1</strong>: Basic ores, common mobs.</p>
+                    <p>- <strong>Floor 5</strong>: Rare ores, Abyssal Golem spawns.</p>
+                </div>
+            </div>
+            <div id="progression" class="sub-wiki">
+                <div class="sub-wiki-content">
+                    <div class="back-btn" onclick="backToMainWiki(event)">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Back</span>
+                    </div>
+                    <h2>Progression</h2>
+                    <p>Level up through grinding to unlock new tiers and rewards.</p>
+                    <h3>Levels</h3>
+                    <p>Progress from Level 1 to 50, unlocking floors and items.</p>
+                    <h3>EXP Sources</h3>
+                    <p>Earn EXP from mining, fighting, and quests.</p>
+                </div>
+            </div>
+            <div id="enchanting" class="sub-wiki">
+                <div class="sub-wiki-content">
+                    <div class="back-btn" onclick="backToMainWiki(event)">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Back</span>
+                    </div>
+                    <h2>Enchanting (Energy)</h2>
+                    <p>Enhance gear with Energy-powered enchantments.</p>
+                    <h3>How It Works</h3>
+                    <p>Use Energy at an Altar to apply enchantments.</p>
+                    <h3>Examples</h3>
+                    <p>- <strong>Blaze Strike</strong>: Fire damage boost.</p>
+                </div>
+            </div>
+            <div id="items" class="sub-wiki">
+                <div class="sub-wiki-content">
+                    <div class="back-btn" onclick="backToMainWiki(event)">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Back</span>
+                    </div>
+                    <h2>Items</h2>
+                    <p>Discover custom items to boost your gameplay.</p>
+                    <h3>Variety</h3>
+                    <p>Includes weapons, tools, and trinkets.</p>
+                    <h3>Sources</h3>
+                    <p>Drops, crafting, and floor rewards.</p>
+                </div>
+            </div>
+            <div id="recipes" class="sub-wiki">
+                <div class="sub-wiki-content">
+                    <div class="back-btn" onclick="backToMainWiki(event)">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Back</span>
+                    </div>
+                    <h2>Recipes</h2>
+                    <p>Craft unique items with special recipes.</p>
+                    <h3>Crafting</h3>
+                    <p>Use the Forge with rare materials.</p>
+                    <h3>Examples</h3>
+                    <p>- <strong>Void Blade</strong>: 4 Obsidian + 2 Gems.</p>
+                </div>
+            </div>
+            <div id="mobs" class="sub-wiki">
+                <div class="sub-wiki-content">
+                    <div class="back-btn" onclick="backToMainWiki(event)">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Back</span>
+                    </div>
+                    <h2>Mobs</h2>
+                    <p>Battle custom mobs for unique drops.</p>
+                    <h3>Types</h3>
+                    <p>Features Abyssal Golems and more.</p>
+                    <h3>Drops</h3>
+                    <p>Includes cores and embers.</p>
+                </div>
+            </div>
+            <div id="fishing" class="sub-wiki">
+                <div class="sub-wiki-content">
+                    <div class="back-btn" onclick="backToMainWiki(event)">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Back</span>
+                    </div>
+                    <h2>Fishing</h2>
+                    <p>Fish for rare loot across floors.</p>
+                    <h3>Mechanics</h3>
+                    <p>Better rods improve catch rates.</p>
+                    <h3>Catches</h3>
+                    <p>From fish to relics.</p>
+                </div>
+            </div>
+            <div id="vaults" class="sub-wiki">
+                <div class="sub-wiki-content">
+                    <div class="back-btn" onclick="backToMainWiki(event)">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Back</span>
+                    </div>
+                    <h2>Vaults</h2>
+                    <p>Secure your loot in vaults.</p>
+                    <h3>Types</h3>
+                    <p>Small and large options available.</p>
+                    <h3>Raids</h3>
+                    <p>Defend against daily raids.</p>
+                </div>
+            </div>
+            <div id="raiding" class="sub-wiki">
+                <div class="sub-wiki-content">
+                    <div class="back-btn" onclick="backToMainWiki(event)">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Back</span>
+                    </div>
+                    <h2>Raiding</h2>
+                    <p>Raid others’ vaults for loot.</p>
+                    <h3>Execution</h3>
+                    <p>Defeat Guards within 10 minutes.</p>
+                    <h3>Risks</h3>
+                    <p>Lose gear if you fail.</p>
+                </div>
+            </div>
+            <div id="guilds" class="sub-wiki">
+                <div class="sub-wiki-content">
+                    <div class="back-btn" onclick="backToMainWiki(event)">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Back</span>
+                    </div>
+                    <h2>Guilds</h2>
+                    <p>Team up for shared benefits.</p>
+                    <h3>Creation</h3>
+                    <p>Start with coins and gems.</p>
+                    <h3>Benefits</h3>
+                    <p>Group raids and vaults.</p>
+                </div>
+            </div>
+            <div id="guards" class="sub-wiki">
+                <div class="sub-wiki-content">
+                    <div class="back-btn" onclick="backToMainWiki(event)">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Back</span>
+                    </div>
+                    <h2>Guards</h2>
+                    <p>Hire Guards to protect vaults.</p>
+                    <h3>Tiers</h3>
+                    <p>Basic and Elite options.</p>
+                    <h3>Placement</h3>
+                    <p>Up to 5 per vault.</p>
+                </div>
+            </div>
+            <div id="generators" class="sub-wiki">
+                <div class="sub-wiki-content">
+                    <div class="back-btn" onclick="backToMainWiki(event)">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Back</span>
+                    </div>
+                    <h2>Generators</h2>
+                    <p>Automate ore mining in vaults.</p>
+                    <h3>Fuel</h3>
+                    <p>Use coal or gems for power.</p>
+                    <h3>Output</h3>
+                    <p>Boosts ore production.</p>
+                </div>
+            </div>
+            <div id="pets" class="sub-wiki">
+                <div class="sub-wiki-content">
+                    <div class="back-btn" onclick="backToMainWiki(event)">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Back</span>
+                    </div>
+                    <h2>Pets</h2>
+                    <p>Gain boosts from companions.</p>
+                    <h3>Types</h3>
+                    <p>Wolves, dragons, and more.</p>
+                    <h3>Upgrades</h3>
+                    <p>Level up with gems.</p>
+                </div>
+            </div>
+            <div id="leverages" class="sub-wiki">
+                <div class="sub-wiki-content">
+                    <div class="back-btn" onclick="backToMainWiki(event)">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Back</span>
+                    </div>
+                    <h2>Leverages</h2>
+                    <p>Boost EXP with multipliers.</p>
+                    <h3>Mechanics</h3>
+                    <p>200% to 10%, resets daily.</p>
+                    <h3>Strategy</h3>
+                    <p>Maximize early grinding.</p>
+                </div>
+            </div>
+            <div id="outposts" class="sub-wiki">
+                <div class="sub-wiki-content">
+                    <div class="back-btn" onclick="backToMainWiki(event)">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Back</span>
+                    </div>
+                    <h2>Outposts</h2>
+                    <p>Fight for rare loot with guilds.</p>
+                    <h3>Control</h3>
+                    <p>Hold for an hour to claim.</p>
+                    <h3>Rewards</h3>
+                    <p>Rare ores and items.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="store">
+        <div class="container">
+            <div class="store-header">
+                <h1>Store</h1>
+            </div>
+            <div class="store-grid">
+                <div class="store-item">
+                    <img src="https://placehold.co/320x200?text=100+Gems" alt="Small Gem Bundle">
+                    <div class="price">$4.99</div>
+                    <button onclick="alert('Purchase coming soon!')">Buy Now</button>
+                </div>
+                <div class="store-item">
+                    <img src="https://placehold.co/320x200?text=500+Gems+%2B100" alt="Medium Gem Bundle">
+                    <div class="price">$12.99</div>
+                    <button onclick="alert('Purchase coming soon!')">Buy Now</button>
+                </div>
+                <div class="store-item">
+                    <img src="https://placehold.co/320x200?text=1200+Gems+%2B300" alt="Large Gem Bundle">
+                    <div class="price">$34.99</div>
+                    <button onclick="alert('Purchase coming soon!')">Buy Now</button>
+                </div>
+                <div class="store-item">
+                    <img src="https://placehold.co/320x200?text=2500+Gems+%2B700" alt="Mega Gem Bundle">
+                    <div class="price">$64.99</div>
+                    <button onclick="alert('Purchase coming soon!')">Buy Now</button>
+                </div>
+            </div>
+            <div class="store-tagline">
+                Boost your ascent—grab some gems today!
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 Tower of Bedrock. Forge your path.</p>
+        <div class="socials">
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-discord"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation
+        const navLinks = document.querySelectorAll('.nav-links a');
+        const sections = document.querySelectorAll('section');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                    if (section.id === targetId) {
+                        section.classList.add('active');
+                    }
+                });
+                navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                document.querySelectorAll('.sub-wiki').forEach(sub => sub.classList.remove('active'));
+                document.querySelector('#wiki .wiki-grid').style.display = 'grid';
+            });
+        });
+
+        // Sub-Wiki Toggle
+        function showSubWiki(id) {
+            document.querySelector('#wiki .wiki-grid').style.display = 'none';
+            document.querySelectorAll('.sub-wiki').forEach(sub => sub.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function backToMainWiki(event) {
+            event.preventDefault();
+            document.querySelectorAll('.sub-wiki').forEach(sub => sub.classList.remove('active'));
+            document.querySelector('#wiki .wiki-grid').style.display = 'grid';
+        }
+
+        // IP Copy Animation
+        function copyIP(element) {
+            navigator.clipboard.writeText('play.towerofbedrock.com');
+            element.classList.add('copied');
+            setTimeout(() => {
+                element.classList.remove('copied');
+            }, 1200); // Matches animation duration
+        }
+    </script>
+</body>
+</html>
