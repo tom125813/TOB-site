@@ -73,8 +73,7 @@
         }
 
         .banner-container.scrolled {
-              top: -40px; /* Moves up when banner hides */
-
+            top: -40px; /* Moves up when banner hides */
         }
 
         /* Banner */
@@ -104,7 +103,7 @@
         .banner .ticker {
             display: inline-block;
             white-space: nowrap;
-            animation: bannerSlide 20s linear infinite;
+            animation: bannerSlide 30s linear infinite; /* Increased duration for smoothness */
         }
 
         .banner .ticker span {
@@ -135,11 +134,12 @@
 
         .navbar .logo {
             font-family: 'Press Start 2P', cursive;
-            font-size: clamp(1.4em, 4vw, 1.8em);
+            font-size: clamp(1.2em, 3.5vw, 1.8em); /* Slightly smaller max */
             color: #ff4081;
             text-transform: uppercase;
             display: block;
             margin-bottom: 10px;
+            white-space: nowrap; /* Keeps it on one line */
         }
 
         .nav-links {
@@ -230,14 +230,15 @@
         }
 
         #home .hero-section h2 {
-            font-size: clamp(2em, 5vw, 2.5em);
+            font-size: clamp(1.5em, 4.5vw, 2.5em); /* Adjusted for mobile */
             margin-bottom: 20px;
             text-shadow: 0 0 10px rgba(255, 64, 129, 0.5);
             word-wrap: break-word;
+            white-space: normal; /* Allows controlled line breaks */
         }
 
         #home .hero-section p {
-            font-size: clamp(1.2em, 3vw, 1.6em);
+            font-size: clamp(1em, 2.8vw, 1.6em); /* Slightly smaller */
             color: #b0b0c0;
             margin-bottom: 30px;
             max-width: 800px;
@@ -251,12 +252,14 @@
             align-items: center;
             gap: 10px;
             background: rgba(255, 64, 129, 0.3);
-            padding: clamp(10px, 2vw, 12px) clamp(20px, 3vw, 25px);
+            padding: clamp(8px, 1.5vw, 12px) clamp(15px, 2.5vw, 25px); /* Adjusted padding */
             border-radius: 10px;
             cursor: pointer;
             transition: background 0.3s, transform 0.3s;
             position: relative;
-            font-size: clamp(1em, 2.5vw, 1.4em);
+            font-size: clamp(0.9em, 2vw, 1.4em); /* Slightly smaller */
+            max-width: 90%; /* Prevents overflow */
+            margin: 0 auto; /* Centers properly */
         }
 
         #home .hero-section .server-ip:hover {
@@ -285,10 +288,10 @@
             color: #ff4081;
             font-size: clamp(1em, 2vw, 1.2em);
             opacity: 0;
-            right: clamp(15px, 2vw, 20px);
+            top: 50%;
+            right: clamp(10px, 1.5vw, 15px); /* Adjusted for balance */
             transform: translateY(-50%);
         }
-
 
         #home .hero-section .server-ip.copied .tick {
             opacity: 1;
@@ -373,6 +376,10 @@
         #home .changelog-title {
             text-align: center;
             margin-bottom: 40px;
+        }
+
+        #home .changelog-title h1 {
+            font-size: clamp(1.8em, 5vw, 3em); /* Adjusted for mobile */
         }
 
         #home .changelog-header {
@@ -534,12 +541,6 @@
             gap: 25px;
         }
 
-        @media (max-width: 768px) {
-            #wiki .wiki-grid {
-                grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
-            }
-        }
-
         #wiki .wiki-item {
             background: rgba(40, 40, 60, 0.9);
             padding: 15px;
@@ -659,12 +660,12 @@
             position: relative;
             overflow: hidden;
             transition: transform 0.3s;
-            min-height: 350px; /* Reduced height */
+            min-height: 350px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            gap: 10px; /* Consistent spacing */
+            gap: 10px;
         }
 
         #store .store-item:hover {
@@ -782,6 +783,19 @@
 
             #store .store-item {
                 min-height: 300px; /* Further reduced for mobile */
+            }
+
+            #wiki .wiki-grid {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
+            }
+
+            #forums .forum-header {
+                flex-direction: column; /* Stack vertically on mobile */
+                align-items: flex-start;
+            }
+
+            #forums .forum-header .stats {
+                margin-top: 5px; /* Space below category text */
             }
         }
     </style>
@@ -1400,7 +1414,7 @@
         const sections = document.querySelectorAll('section');
         const banner = document.querySelector('.banner');
         const navbar = document.querySelector('.navbar');
-        const navbarCont = document.querySelector('.banner-container');
+        const bannerContainer = document.querySelector('.banner-container');
 
         navLinks.forEach(link => {
             link.addEventListener('click', (e) => {
@@ -1416,7 +1430,7 @@
                 link.classList.add('active');
                 document.querySelectorAll('.sub-wiki').forEach(sub => sub.classList.remove('active'));
                 document.querySelector('#wiki .wiki-grid').style.display = 'grid';
-                window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             });
         });
 
@@ -1426,7 +1440,7 @@
             document.querySelectorAll('.sub-wiki').forEach(sub => sub.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             setTimeout(() => {
-                window.scrollTo({ top: 0, behavior: 'smooth' }); // Forced scroll after slight delay
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }, 10);
         }
 
@@ -1435,7 +1449,7 @@
             document.querySelectorAll('.sub-wiki').forEach(sub => sub.classList.remove('active'));
             document.querySelector('#wiki .wiki-grid').style.display = 'grid';
             setTimeout(() => {
-                window.scrollTo({ top: 0, behavior: 'smooth' }); // Forced scroll after slight delay
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }, 10);
         }
 
@@ -1445,7 +1459,7 @@
             element.classList.add('copied');
             setTimeout(() => {
                 element.classList.remove('copied');
-            }, 2000); // Extended duration for visibility
+            }, 2000);
         }
 
         // Banner and Navbar Scroll Behavior
@@ -1454,12 +1468,12 @@
                 banner.classList.remove('visible');
                 banner.classList.add('hidden');
                 navbar.classList.add('scrolled');
-                navbarCont.classList.add('scrolled');
+                bannerContainer.classList.add('scrolled');
             } else {
                 banner.classList.remove('hidden');
                 banner.classList.add('visible');
                 navbar.classList.remove('scrolled');
-                navbarCont.classList.remove('scrolled');
+                bannerContainer.classList.remove('scrolled');
             }
         });
 
