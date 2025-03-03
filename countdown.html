@@ -383,14 +383,15 @@
             margin-bottom: 60px;
             position: relative;
             overflow: hidden;
-            background: linear-gradient(135deg, rgba(40, 40, 60, 0.95), rgba(60, 60, 80, 0.95));
-            box-shadow: 0 0 25px rgba(255, 64, 129, 0.5);
-            animation: fadeUp 1s ease-out;
+            background: linear-gradient(135deg, rgba(40, 40, 60, 0.9), rgba(60, 60, 80, 0.9));
+            box-shadow: inset 0 0 20px rgba(255, 64, 129, 0.2);
             opacity: 0;
+            transform: translateY(20px);
+            animation: none;
         }
 
         .why-play-section.visible {
-            opacity: 1;
+            animation: fadeUp 1s ease-out forwards;
         }
 
         .why-play-section::before {
@@ -402,7 +403,6 @@
             height: 200%;
             background: radial-gradient(circle, rgba(255, 64, 129, 0.2) 0%, transparent 70%);
             z-index: -1;
-            animation: pulse 6s ease infinite;
         }
 
         .why-play-section h2 {
@@ -438,11 +438,13 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             flex: 1 1 280px;
             max-width: 280px;
+            transform: scale(1);
             min-width: 220px;
-            opacity: 0;
             box-shadow: 0 0 15px rgba(255, 64, 129, 0.3);
             position: relative;
             overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
         }
 
         .why-play-section .bottom-row .feature-item {
@@ -463,18 +465,13 @@
 
         .why-play-section .feature-item.visible {
             opacity: 1;
-            animation: fadeInUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            transform: translateY(0);
+            animation: fadeUp 0.8s ease-out forwards;
         }
 
-        .why-play-section .feature-item:nth-child(1) { animation-delay: 0.1s; }
-        .why-play-section .feature-item:nth-child(2) { animation-delay: 0.2s; }
-        .why-play-section .feature-item:nth-child(3) { animation-delay: 0.3s; }
-        .why-play-section .feature-item:nth-child(4) { animation-delay: 0.4s; }
-        .why-play-section .feature-item:nth-child(5) { animation-delay: 0.5s; }
-
         .why-play-section .feature-item:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 25px rgba(255, 64, 129, 0.8);
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 0 25px rgba(255, 64, 129, 0.6);
         }
 
         .why-play-section .feature-item i {
@@ -510,10 +507,23 @@
             padding: 60px 20px;
             background: linear-gradient(45deg, rgba(30, 30, 50, 0.95), rgba(50, 50, 70, 0.95));
             border-radius: 15px;
-            animation: fadeUp 1s ease-out 1s forwards, glowPulse 3s infinite;
+            margin-bottom: 20px;
+            border: 1px solid #ff4081;
+            box-shadow: 0 0 30px rgba(255, 64, 129, 0.3);
             opacity: 0;
+            transform: translateY(20px);
             position: relative;
             overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .release-section.visible {
+            animation: fadeUp 1s ease-out forwards;
+        }
+
+        .release-section:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 0 25px rgba(255, 64, 129, 0.6);
         }
 
         .release-section::before {
@@ -727,7 +737,7 @@
         <div class="container">
             <div class="hero-section">
                 <h2>JOIN THE JOURNEY</h2>
-                <p>Counting down to our epic launch on April 4th, 2025! Prepare for an MMORPG adventure with towering floors, fierce mobs, and epic loot.</p>
+                <p>Prepare for an MMORPG adventure with towering floors, fierce mobs, and epic loot.</p>
                 <div class="countdown" id="release-countdown">
                     <div>
                         <span id="days">00</span>
@@ -815,7 +825,7 @@
             </div>
 
             <div class="why-play-section">
-                <h2>WHY PLAY?</h2>
+                <h2>WHY PLAY HERE?</h2>
                 <div class="features-grid">
                     <div class="top-row">
                         <div class="feature-item">
@@ -944,7 +954,7 @@
                         entry.target.querySelectorAll('.feature-item').forEach((item, idx) => {
                             setTimeout(() => {
                                 item.classList.add('visible');
-                            }, idx * 100); // Tighter delay for smoother flow
+                            }, idx * 100);
                         });
                     } else if (entry.target.classList.contains('release-section')) {
                         entry.target.classList.add('visible');
