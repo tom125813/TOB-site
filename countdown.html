@@ -35,6 +35,20 @@
             font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
             line-height: 1.6;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 64, 129, 0.15) 0%, transparent 70%);
+            animation: pulse 10s ease infinite;
+            z-index: -1;
+            pointer-events: none;
         }
 
         ::selection {
@@ -49,9 +63,9 @@
         }
 
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            0% { opacity: 0.8; }
+            50% { opacity: 1; }
+            100% { opacity: 0.8; }
         }
 
         @keyframes arrowBounce {
@@ -71,13 +85,9 @@
             100% { background-position: 25% 70%; }
         }
 
-        @keyframes glitch {
-            0% { transform: translate(0); }
-            20% { transform: translate(-1px, 1px); }
-            40% { transform: translate(-1px, -1px); }
-            60% { transform: translate(1px, 1px); }
-            80% { transform: translate(1px, -1px); }
-            100% { transform: translate(0); }
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(25px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         /* Banner Container */
@@ -143,9 +153,9 @@
             position: fixed;
             top: 40px;
             width: 100%;
-            padding: 10px 20px;
+            padding: 15px 20px;
             background: rgba(30, 30, 50, 0.95);
-            border-bottom: 2px solid #ff4081;
+            border-bottom: 3px solid #ff4081;
             z-index: 1000;
             text-align: center;
             transition: top 0.3s ease;
@@ -158,19 +168,19 @@
 
         .navbar .logo {
             font-family: 'Press Start 2P', cursive;
-            font-size: clamp(1.2em, 3.5vw, 1.8em);
+            font-size: clamp(1.5em, 3.5vw, 2em);
             color: #ff4081;
             text-transform: uppercase;
             display: block;
             margin-bottom: 10px;
             white-space: nowrap;
-            text-shadow: 0 0 10px rgba(255, 64, 129, 0.3);
+            text-shadow: 0 0 15px rgba(255, 64, 129, 0.5);
         }
 
         .nav-links {
             display: flex;
             justify-content: center;
-            gap: clamp(15px, 3vw, 30px);
+            gap: clamp(20px, 3vw, 40px);
             list-style: none;
         }
 
@@ -178,26 +188,30 @@
             color: #e0e0e0;
             text-decoration: none;
             font-family: 'Roboto', sans-serif;
-            font-size: clamp(0.9em, 2vw, 1.1em);
-            font-weight: 600;
+            font-size: clamp(1em, 2vw, 1.2em);
+            font-weight: 700;
             text-transform: uppercase;
             transition: color 0.3s, transform 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
-        .nav-links a:hover,
+        .nav-links a:hover:not(.locked),
         .nav-links a.active {
             color: #ff4081;
             transform: scale(1.1);
         }
 
         .nav-links a.locked {
+            color: #666;
             cursor: not-allowed;
-            opacity: 0.7;
+            opacity: 0.6;
         }
 
         /* Main Content */
         .landing-container {
-            padding: 180px 20px 60px;
+            padding: 220px 20px 60px;
             background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuMjHxIGmVAAAAMElEQVQYV2NgoBJwcnJyanJycvL///8/AQwMTEwsLCwsLCwsLCwsLCwsLCwsLCwsDI4GAV8HAFrpV3gAAAAASUVORK5CYII=') repeat;
             background-size: 16px 16px;
         }
@@ -210,9 +224,9 @@
 
         .hero-section {
             background: radial-gradient(circle, rgba(255, 64, 129, 0.2) 0%, transparent 100%);
-            padding: 60px 40px 40px;
+            padding: 60px 40px;
             border-radius: 15px;
-            border: 2px solid rgba(255, 64, 129, 0.4);
+            border: 3px solid #ff4081;
             margin-bottom: 60px;
             position: relative;
             overflow: hidden;
@@ -220,6 +234,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            box-shadow: 0 0 20px rgba(255, 64, 129, 0.4);
         }
 
         .hero-section::before {
@@ -236,30 +251,31 @@
 
         .hero-section h2 {
             font-family: 'Press Start 2P', cursive;
-            font-size: clamp(2em, 5vw, 3em);
+            font-size: clamp(2.2em, 5.5vw, 3.2em);
             color: #ff4081;
             text-transform: uppercase;
-            margin-bottom: 20px;
-            text-shadow: 0 0 15px rgba(255, 64, 129, 0.7);
+            margin-bottom: 25px;
+            text-shadow: 0 0 20px rgba(255, 64, 129, 0.7);
             animation: pulse 2s infinite;
             text-align: center;
         }
 
         .hero-section p {
-            font-size: clamp(1.2em, 2.8vw, 1.8em);
+            font-size: clamp(1.3em, 3vw, 1.9em);
             color: #b0b0c0;
-            max-width: 700px;
-            margin: 0 auto 20px;
+            max-width: 800px;
+            margin: 0 auto 25px;
             animation: fadeUp 1.2s ease-out 0.2s forwards;
             opacity: 0;
             text-align: center;
+            font-weight: 600;
         }
 
         .countdown {
             display: flex;
             gap: 15px;
             justify-content: center;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             animation: fadeUp 1.4s ease-out 0.4s forwards;
             opacity: 0;
         }
@@ -358,89 +374,134 @@
             color: #e0e0e0;
         }
 
-        /* Why Join Us Section */
-        .why-join-section {
-            background: linear-gradient(135deg, rgba(40, 40, 60, 0.9), rgba(60, 60, 80, 0.9));
+        /* Why Play? Section */
+        .why-play-section {
             padding: 60px 20px;
             border-radius: 15px;
-            border: 2px solid rgba(255, 64, 129, 0.6);
+            border: 3px solid #ff4081;
             text-align: center;
             margin-bottom: 60px;
-            box-shadow: inset 0 0 20px rgba(255, 64, 129, 0.2);
             position: relative;
             overflow: hidden;
+            background: linear-gradient(135deg, rgba(40, 40, 60, 0.95), rgba(60, 60, 80, 0.95));
+            box-shadow: 0 0 25px rgba(255, 64, 129, 0.5);
+            animation: fadeUp 1s ease-out;
+            opacity: 0;
         }
 
-        .why-join-section::before {
+        .why-play-section.visible {
+            opacity: 1;
+        }
+
+        .why-play-section::before {
             content: '';
             position: absolute;
             top: -50%;
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(255, 64, 129, 0.1) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(255, 64, 129, 0.2) 0%, transparent 70%);
             z-index: -1;
-            animation: bgGlow 8s ease infinite;
+            animation: pulse 6s ease infinite;
         }
 
-        .why-join-section h2 {
+        .why-play-section h2 {
             font-family: 'Press Start 2P', cursive;
-            font-size: clamp(1.8em, 4.5vw, 2.5em);
+            font-size: clamp(2em, 5vw, 3em);
             color: #ff4081;
-            margin-bottom: 30px;
-            text-shadow: 0 0 15px rgba(255, 64, 129, 0.7);
+            margin-bottom: 40px;
+            text-shadow: 0 0 20px rgba(255, 64, 129, 0.7);
         }
 
-        .why-join-section .features-grid {
+        .why-play-section .features-grid {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
+            gap: 25px;
             max-width: 100%;
         }
 
-        .why-join-section .top-row {
+        .why-play-section .top-row,
+        .why-play-section .bottom-row {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 25px;
             width: 100%;
-            max-width: 900px; /* Matches 3 items */
+            max-width: 900px;
         }
 
-        .why-join-section .bottom-row {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            width: 100%;
-            max-width: 900px; /* Matches top row width */
-        }
-
-        .why-join-section .feature-item {
-            background: rgba(50, 50, 70, 0.9);
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 64, 129, 0.3);
+        .why-play-section .feature-item {
+            background: rgba(50, 50, 70, 0.95);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #ff4081;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             flex: 1 1 280px;
             max-width: 280px;
             min-width: 220px;
+            opacity: 0;
+            box-shadow: 0 0 15px rgba(255, 64, 129, 0.3);
+            position: relative;
+            overflow: hidden;
         }
 
-        .why-join-section .bottom-row .feature-item {
-            flex: 1 1 50%; /* Bottom items stretch to half the row */
-            max-width: 440px; /* Half of 900px minus gap */
+        .why-play-section .bottom-row .feature-item {
+            flex: 1 1 50%;
+            max-width: 440px;
         }
 
-        .why-join-section .feature-item:hover {
+        .why-play-section .feature-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(255, 64, 129, 0.1), transparent);
+            z-index: -1;
+        }
+
+        .why-play-section .feature-item.visible {
+            opacity: 1;
+            animation: fadeInUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        .why-play-section .feature-item:nth-child(1) { animation-delay: 0.1s; }
+        .why-play-section .feature-item:nth-child(2) { animation-delay: 0.2s; }
+        .why-play-section .feature-item:nth-child(3) { animation-delay: 0.3s; }
+        .why-play-section .feature-item:nth-child(4) { animation-delay: 0.4s; }
+        .why-play-section .feature-item:nth-child(5) { animation-delay: 0.5s; }
+
+        .why-play-section .feature-item:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(255, 64, 129, 0.5);
+            box-shadow: 0 0 25px rgba(255, 64, 129, 0.8);
         }
 
-        .why-join-section .feature-item i {
-            font-size: clamp(2em, 5vw, 2.5em);
+        .why-play-section .feature-item i {
+            font-size: clamp(2.2em, 5vw, 2.8em);
             color: #ff4081;
             margin-bottom: 15px;
-            text-shadow: 0 0 10px rgba(255, 64, 129, 0.4);
+            text-shadow: 0 0 15px rgba(255, 64, 129, 0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .why-play-section .feature-item:hover i {
+            transform: scale(1.1);
+        }
+
+        .why-play-section .feature-item h3 {
+            font-family: 'Roboto', sans-serif;
+            font-size: clamp(1.3em, 3vw, 1.6em);
+            color: #ff4081;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(255, 64, 129, 0.3);
+        }
+
+        .why-play-section .feature-item p {
+            font-size: clamp(1em, 2vw, 1.2em);
+            color: #e0e0e0;
+            font-weight: 500;
         }
 
         /* Release Section */
@@ -473,7 +534,6 @@
             color: #ff4081;
             margin-bottom: 10px;
             text-shadow: 0 0 15px rgba(255, 64, 129, 0.7);
-            #animation: glitch 1.5s infinite;
             background: linear-gradient(90deg, rgba(255, 64, 129, 0.2), rgba(255, 64, 129, 0.5), rgba(255, 64, 129, 0.2));
             padding: 5px 20px;
             border-radius: 10px;
@@ -534,15 +594,17 @@
             text-align: center;
             padding: 40px;
             background: rgba(30, 30, 50, 0.95);
-            border-top: 2px solid #ff4081;
+            border-top: 3px solid #ff4081;
             position: relative;
             z-index: 1;
+            box-shadow: 0 -5px 20px rgba(255, 64, 129, 0.3);
         }
 
         footer p {
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(0.9em, 2vw, 1em);
-            color: #b0b0c0;
+            font-size: clamp(1em, 2vw, 1.2em);
+            color: #e0e0e0;
+            font-weight: 600;
         }
 
         footer .socials {
@@ -551,20 +613,21 @@
 
         footer .socials a {
             color: #e0e0e0;
-            font-size: clamp(1.5em, 3vw, 1.8em);
-            margin: 0 15px;
+            font-size: clamp(1.8em, 3vw, 2em);
+            margin: 0 20px;
             transition: color 0.3s, transform 0.3s;
         }
 
         footer .socials a:hover {
             color: #ff4081;
             transform: scale(1.2);
+            text-shadow: 0 0 15px rgba(255, 64, 129, 0.5);
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
             .landing-container {
-                padding: 150px 15px 40px;
+                padding: 180px 15px 40px;
             }
 
             .navbar {
@@ -572,17 +635,15 @@
             }
 
             .nav-links {
-                gap: 10px;
+                gap: 15px;
             }
 
             .hero-section {
-                padding: 40px 15px 30px;
+                padding: 40px 15px;
             }
 
             .hero-section h2 {
                 font-size: clamp(1.8em, 4vw, 2.5em);
-                white-space: normal;
-                line-height: 1.2;
             }
 
             .hero-section p {
@@ -610,14 +671,14 @@
                 grid-template-columns: 1fr;
             }
 
-            .why-join-section .top-row,
-            .why-join-section .bottom-row {
+            .why-play-section .top-row,
+            .why-play-section .bottom-row {
                 flex-direction: column;
                 align-items: center;
                 max-width: 100%;
             }
 
-            .why-join-section .feature-item {
+            .why-play-section .feature-item {
                 max-width: 300px;
             }
 
@@ -656,9 +717,9 @@
         <h1 class="logo">Tower of Bedrock</h1>
         <ul class="nav-links">
             <li><a href="#home" class="active">Home</a></li>
-            <li><a href="#forums" class="locked">Forums</a></li>
-            <li><a href="#wiki" class="locked">Wiki</a></li>
-            <li><a href="#store" class="locked">Store</a></li>
+            <li><a href="#forums" class="locked">Forums <i class="fas fa-lock"></i></a></li>
+            <li><a href="#wiki" class="locked">Wiki <i class="fas fa-lock"></i></a></li>
+            <li><a href="#store" class="locked">Store <i class="fas fa-lock"></i></a></li>
         </ul>
     </nav>
 
@@ -666,7 +727,7 @@
         <div class="container">
             <div class="hero-section">
                 <h2>JOIN THE JOURNEY</h2>
-                <p>A Minecraft MMORPG where legends are forged</p>
+                <p>Counting down to our epic launch on April 4th, 2025! Prepare for an MMORPG adventure with towering floors, fierce mobs, and epic loot.</p>
                 <div class="countdown" id="release-countdown">
                     <div>
                         <span id="days">00</span>
@@ -753,36 +814,36 @@
                 </div>
             </div>
 
-            <div class="why-join-section">
-                <h2>WHY JOIN US?</h2>
+            <div class="why-play-section">
+                <h2>WHY PLAY?</h2>
                 <div class="features-grid">
                     <div class="top-row">
                         <div class="feature-item">
                             <i class="fas fa-book-open"></i>
-                            <h3>Extensive Wiki</h3>
-                            <p>Dive into a massive, detailed wiki—everything you need to master the tower.</p>
+                            <h3>Deep Lore Awaits</h3>
+                            <p>Uncover a rich world with a wiki packed full of secrets and strategies.</p>
                         </div>
                         <div class="feature-item">
-                            <i class="fas fa-sync-alt"></i>
-                            <h3>Huge Friday Updates</h3>
-                            <p>Every Friday brings major updates—new floors, items, and surprises!</p>
+                            <i class="fas fa-clock"></i>
+                            <h3>Weekly Freshness</h3>
+                            <p>Expect huge updates every Friday—new content keeps the adventure alive.</p>
                         </div>
                         <div class="feature-item">
-                            <i class="fas fa-comments"></i>
-                            <h3>Weekly Check-Ins</h3>
-                            <p>Join the owners every Friday to chat, share feedback, and shape the game.</p>
+                            <i class="fas fa-users"></i>
+                            <h3>Community Driven</h3>
+                            <p>Your voice matters—weekly check-ins let us build the game you love.</p>
                         </div>
                     </div>
                     <div class="bottom-row">
                         <div class="feature-item">
-                            <i class="fas fa-lightbulb"></i>
-                            <h3>True Innovation</h3>
-                            <p>We’re not a copy-cat server—expect fresh, unique mechanics built for fun.</p>
+                            <i class="fas fa-star"></i>
+                            <h3>Unique Gameplay</h3>
+                            <p>Forget the clones—our custom mechanics deliver a one-of-a-kind experience.</p>
                         </div>
                         <div class="feature-item">
                             <i class="fas fa-heart"></i>
-                            <h3>Not Pay-to-Win</h3>
-                            <p>Focused on pure fun—no P2W nonsense, just an epic gaming experience.</p>
+                            <h3>Fair & Fun</h3>
+                            <p>No pay-to-win here—just pure skill, strategy, and epic moments.</p>
                         </div>
                     </div>
                 </div>
@@ -809,6 +870,11 @@
     </footer>
 
     <script>
+        // Scroll to top on page load
+        window.onload = function() {
+            window.scrollTo(0, 0);
+        };
+
         // Banner and Navbar Scroll Behavior
         const bannerContainer = document.querySelector('.banner-container');
         const banner = document.querySelector('.banner');
@@ -862,20 +928,35 @@
             });
         });
 
-        // Features Animation on Scroll
+        // Features and Section Animations on Scroll
         const featureItems = document.querySelectorAll('.feature-item');
+        const whyPlaySection = document.querySelector('.why-play-section');
+        const releaseSection = document.querySelector('.release-section');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry, index) => {
                 if (entry.isIntersecting) {
-                    setTimeout(() => {
+                    if (entry.target.classList.contains('feature-item')) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, index * 200);
+                    } else if (entry.target.classList.contains('why-play-section')) {
                         entry.target.classList.add('visible');
-                    }, index * 200);
+                        entry.target.querySelectorAll('.feature-item').forEach((item, idx) => {
+                            setTimeout(() => {
+                                item.classList.add('visible');
+                            }, idx * 100); // Tighter delay for smoother flow
+                        });
+                    } else if (entry.target.classList.contains('release-section')) {
+                        entry.target.classList.add('visible');
+                    }
                     observer.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.3 });
 
         featureItems.forEach(item => observer.observe(item));
+        observer.observe(whyPlaySection);
+        observer.observe(releaseSection);
     </script>
 </body>
 </html>
