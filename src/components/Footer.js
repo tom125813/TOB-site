@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 
 const FooterContainer = styled(motion.footer)`
-  background: linear-gradient(135deg, rgba(20, 20, 35, 0.98), rgba(30, 30, 50, 0.98));
-  border-top: 3px solid #ff4081;
+  background: #141820;
+  border-top: 2px solid rgba(255, 64, 129, 0.4);
   position: relative;
   z-index: 1;
-  backdrop-filter: blur(15px);
   overflow: hidden;
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.3);
   
   &::before {
     content: '';
@@ -20,13 +20,15 @@ const FooterContainer = styled(motion.footer)`
     height: 100%;
     background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuMjHxIGmVAAAAMElEQVQYV2NgoBJwcnJyanJycvL///8/AQwMTEwsLCwsLCwsLCwsLCwsLCwsLCwsDI4GAV8HAFrpV3gAAAAASUVORK5CYII=') repeat;
     background-size: 16px 16px;
-    opacity: 0.1;
+    opacity: 0.03;
     z-index: -1;
   }
 `;
 
 const FooterContent = styled.div`
-  padding: 30px 40px 15px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 30px 30px 15px;
   
   @media (max-width: 768px) {
     padding: 30px 20px 15px;
@@ -35,18 +37,18 @@ const FooterContent = styled.div`
 
 const FooterTop = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 40px;
-  margin-bottom: 30px;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 50px;
+  margin-bottom: 40px;
   
   @media (max-width: 1024px) {
     grid-template-columns: repeat(2, 1fr);
-    gap: 30px;
+    gap: 40px;
   }
   
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    gap: 25px;
+    gap: 30px;
   }
 `;
 
@@ -100,55 +102,101 @@ const FooterSection = styled(motion.div)`
 `;
 
 const ServerInfo = styled.div`
-  background: rgba(50, 50, 70, 0.8);
-  padding: 20px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 64, 129, 0.3);
-  margin-bottom: 20px;
+  background: linear-gradient(135deg, rgba(30, 35, 45, 0.8) 0%, rgba(40, 45, 60, 0.8) 100%);
+  padding: 25px;
+  border-radius: 15px;
+  border: 2px solid rgba(255, 64, 129, 0.3);
+  margin-bottom: 25px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    border-color: rgba(255, 64, 129, 0.5);
+    box-shadow: 0 8px 25px rgba(255, 64, 129, 0.2);
+  }
   
   .server-ip {
     display: flex;
     align-items: center;
-    gap: 10px;
-    background: rgba(255, 64, 129, 0.2);
-    padding: 10px 15px;
-    border-radius: 8px;
-    margin-bottom: 15px;
+    gap: 12px;
+    background: linear-gradient(135deg, rgba(255, 64, 129, 0.2), rgba(255, 64, 129, 0.3));
+    padding: 12px 18px;
+    border-radius: 10px;
+    margin-bottom: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
+    border: 1px solid rgba(255, 64, 129, 0.4);
+    position: relative;
+    overflow: hidden;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+    
+    &:hover::before {
+      left: 100%;
+    }
     
     &:hover {
-      background: rgba(255, 64, 129, 0.3);
-      transform: scale(1.02);
+      background: linear-gradient(135deg, rgba(255, 64, 129, 0.3), rgba(255, 64, 129, 0.4));
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 25px rgba(255, 64, 129, 0.4);
+    }
+    
+    &.copied {
+      animation: copySuccess 0.6s ease;
+    }
+    
+    @keyframes copySuccess {
+      0% { transform: translateY(-2px) scale(1.02); }
+      50% { transform: translateY(-4px) scale(1.05); background: rgba(76, 175, 80, 0.3); }
+      100% { transform: translateY(-2px) scale(1.02); }
     }
     
     span {
-      font-family: 'Orbitron', sans-serif;
-      color: #ff4081;
-      font-weight: 600;
+      font-family: 'Roboto', sans-serif;
+      color: white;
+      font-weight: 700;
       font-size: clamp(0.9em, 2vw, 1em);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     }
     
     i {
-      color: #ff4081;
+      color: white;
       cursor: pointer;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        transform: scale(1.2) rotate(10deg);
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+      }
     }
   }
   
   .server-stats {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: 12px;
     font-size: 0.9em;
     
     .stat {
       display: flex;
       justify-content: space-between;
-      color: #b0b0c0;
+      color: #e0e0e0;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 64, 129, 0.1);
       
       .value {
         color: #ff4081;
-        font-weight: 600;
+        font-weight: 700;
+        text-shadow: 0 0 5px rgba(255, 64, 129, 0.3);
       }
     }
   }
@@ -188,26 +236,34 @@ const SocialLinks = styled.div`
 `;
 
 const Newsletter = styled.div`
-  background: rgba(255, 64, 129, 0.1);
-  padding: 20px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 64, 129, 0.3);
-  margin-bottom: 20px;
+  background: linear-gradient(135deg, rgba(255, 64, 129, 0.1) 0%, rgba(255, 64, 129, 0.15) 100%);
+  padding: 25px;
+  border-radius: 15px;
+  border: 2px solid rgba(255, 64, 129, 0.3);
+  margin-bottom: 25px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    border-color: rgba(255, 64, 129, 0.5);
+    box-shadow: 0 8px 25px rgba(255, 64, 129, 0.2);
+  }
   
   .newsletter-form {
     display: flex;
-    gap: 10px;
-    margin-top: 15px;
+    gap: 12px;
+    margin-top: 18px;
     
     input {
       flex: 1;
-      padding: 12px 15px;
-      background: rgba(40, 40, 60, 0.9);
-      border: 1px solid rgba(255, 64, 129, 0.3);
-      border-radius: 8px;
+      padding: 14px 18px;
+      background: rgba(30, 35, 45, 0.9);
+      border: 2px solid rgba(255, 64, 129, 0.3);
+      border-radius: 10px;
       color: #e0e0e0;
       font-family: 'Roboto', sans-serif;
       font-size: 0.9em;
+      transition: all 0.3s ease;
       
       &::placeholder {
         color: #b0b0c0;
@@ -216,26 +272,30 @@ const Newsletter = styled.div`
       &:focus {
         outline: none;
         border-color: #ff4081;
-        box-shadow: 0 0 10px rgba(255, 64, 129, 0.3);
+        box-shadow: 0 0 15px rgba(255, 64, 129, 0.3);
+        background: rgba(30, 35, 45, 1);
       }
     }
     
     button {
-      padding: 12px 20px;
+      padding: 14px 24px;
       background: linear-gradient(135deg, #ff4081, #e03570);
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       color: white;
       font-family: 'Roboto', sans-serif;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       transition: all 0.3s ease;
       white-space: nowrap;
       min-width: fit-content;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       
       &:hover {
-        transform: scale(1.05);
-        box-shadow: 0 0 15px rgba(255, 64, 129, 0.5);
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 8px 25px rgba(255, 64, 129, 0.5);
+        background: linear-gradient(135deg, #ff5a92, #e8467a);
       }
     }
     
@@ -297,9 +357,12 @@ const LegalLinks = styled.div`
 `;
 
 const Footer = () => {
+  const [copied, setCopied] = useState(false);
+  
   const copyServerIP = () => {
     navigator.clipboard.writeText('play.towerofbedrock.com');
-    // You could add a notification here
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   const containerVariants = {
@@ -339,9 +402,9 @@ const Footer = () => {
               and become a legend in the most immersive Minecraft server ever created.
             </p>
             <ServerInfo>
-              <div className="server-ip" onClick={copyServerIP}>
+              <div className={`server-ip ${copied ? 'copied' : ''}`} onClick={copyServerIP}>
                 <span>play.towerofbedrock.com</span>
-                <i className="fas fa-copy"></i>
+                <i className={copied ? "fas fa-check" : "fas fa-copy"}></i>
               </div>
               <div className="server-stats">
                 <div className="stat">
@@ -365,28 +428,19 @@ const Footer = () => {
           </FooterSection>
 
           <FooterSection variants={itemVariants}>
-            <h3>Quick Links</h3>
+            <h3>Support</h3>
+            <p>Need help? Our support team is here to assist you with any questions or issues.</p>
             <ul>
-              <li><Link to="/"><i className="fas fa-home"></i> Home</Link></li>
-              <li><Link to="/forums"><i className="fas fa-comments"></i> Forums</Link></li>
-              <li><Link to="/wiki"><i className="fas fa-book"></i> Wiki</Link></li>
-              <li><Link to="/store"><i className="fas fa-shopping-cart"></i> Store</Link></li>
-              <li><Link to="/leaderboards"><i className="fas fa-trophy"></i> Leaderboards</Link></li>
-              <li><Link to="/stats"><i className="fas fa-chart-bar"></i> Statistics</Link></li>
+              <li><a href="#"><i className="fas fa-question-circle"></i> Help Center</a></li>
+              <li><a href="#"><i className="fas fa-bug"></i> Report Bug</a></li>
+              <li><a href="#"><i className="fas fa-envelope"></i> Contact Support</a></li>
+              <li><a href="#"><i className="fas fa-file-alt"></i> Documentation</a></li>
+              <li><a href="#"><i className="fas fa-users"></i> Player Guide</a></li>
+              <li><a href="#"><i className="fas fa-shield-alt"></i> Report Player</a></li>
             </ul>
           </FooterSection>
 
-          <FooterSection variants={itemVariants}>
-            <h3>Game Features</h3>
-            <ul>
-              <li><a href="#"><i className="fas fa-layer-group"></i> 10+ Unique Floors</a></li>
-              <li><a href="#"><i className="fas fa-users"></i> Guild System</a></li>
-              <li><a href="#"><i className="fas fa-magic"></i> Custom Enchantments</a></li>
-              <li><a href="#"><i className="fas fa-sword"></i> PvP & PvE Combat</a></li>
-              <li><a href="#"><i className="fas fa-dragon"></i> Epic Boss Fights</a></li>
-              <li><a href="#"><i className="fas fa-gem"></i> Rare Loot System</a></li>
-            </ul>
-          </FooterSection>
+
 
           <FooterSection variants={itemVariants}>
             <h3>Community</h3>
@@ -425,7 +479,7 @@ const Footer = () => {
         <FooterBottom>
           <Copyright>
             © 2025 Tower of Bedrock. All rights reserved.
-            <span className="tagline">Forge your legend. Conquer the tower.</span>
+
           </Copyright>
           
           <LegalLinks>

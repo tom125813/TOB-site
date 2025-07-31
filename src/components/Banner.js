@@ -9,10 +9,12 @@ const BannerContainer = styled(motion.div)`
   height: 40px;
   background: rgba(30, 30, 50, 0.95);
   z-index: 1001;
-  transition: top 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(0);
   
   &.scrolled {
     top: -40px;
+    transform: translateY(0);
   }
 `;
 

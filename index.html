@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tower of Bedrock - Minecraft MMORPG</title>
-    <meta name="description" content="Join Tower of Bedrock, the ultimate Minecraft MMORPG. Conquer floors, forge gear, raid with friends, and climb the ranks in an epic adventure!">
-    <meta name="keywords" content="Minecraft MMORPG, Tower of Bedrock, Minecraft adventure, RPG server, multiplayer Minecraft, Minecraft floors, raiding, guilds">
+    <meta name="description"
+        content="Join Tower of Bedrock, the ultimate Minecraft MMORPG. Conquer floors, forge gear, raid with friends, and climb the ranks in an epic adventure!">
+    <meta name="keywords"
+        content="Minecraft MMORPG, Tower of Bedrock, Minecraft adventure, RPG server, multiplayer Minecraft, Minecraft floors, raiding, guilds">
     <meta name="author" content="Tower of Bedrock Team">
     <meta name="robots" content="index, follow">
 
     <!-- Open Graph Tags for Social Media -->
     <meta property="og:title" content="Tower of Bedrock - Minecraft MMORPG">
-    <meta property="og:description" content="Unleash your adventure in Tower of Bedrock, a Minecraft MMORPG with towering floors, epic gear, and thrilling raids. Join now!">
+    <meta property="og:description"
+        content="Unleash your adventure in Tower of Bedrock, a Minecraft MMORPG with towering floors, epic gear, and thrilling raids. Join now!">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.towerofbedrock.com">
     <meta property="og:image" content="https://www.towerofbedrock.com/images/meta-img.png">
@@ -20,10 +24,13 @@
     <!-- Twitter Card Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Tower of Bedrock - Minecraft MMORPG">
-    <meta name="twitter:description" content="Explore Tower of Bedrock, the ultimate Minecraft MMORPG with floors, raids, and guilds. Start your journey today!">
+    <meta name="twitter:description"
+        content="Explore Tower of Bedrock, the ultimate Minecraft MMORPG with floors, raids, and guilds. Start your journey today!">
     <meta name="twitter:image" content="https://www.towerofbedrock.com/images/meta-img.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@400;700&family=Montserrat:wght@300;600&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@400;700&family=Montserrat:wght@300;600&family=Orbitron:wght@400;700&display=swap"
+        rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -46,36 +53,73 @@
 
         /* Animations */
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes bannerSlide {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
         }
 
         @keyframes bannerFade {
-            0% { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0; transform: translateY(-100%); }
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-100%);
+            }
         }
 
         @keyframes countdownSlide {
-            0% { transform: translateY(-100%); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         @keyframes copyTick {
-            0% { opacity: 0; transform: scale(0.5) rotate(0deg); }
-            50% { opacity: 1; transform: scale(1.2) rotate(10deg); }
-            100% { opacity: 1; transform: scale(1) rotate(0deg); }
+            0% {
+                opacity: 0;
+                transform: scale(0.5) rotate(0deg);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.2) rotate(10deg);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
         }
 
         /* Fade-up Animation for All Elements */
-        section.active .container > *,
-        section.active .container .wiki-grid > *,
-        section.active .container .store-grid > *,
-        section.active .container .forum-list > * {
+        section.active .container>*,
+        section.active .container .wiki-grid>*,
+        section.active .container .store-grid>*,
+        section.active .container .forum-list>* {
             animation: fadeUp 0.5s ease-out forwards;
         }
 
@@ -85,13 +129,15 @@
             top: 0;
             width: 100%;
             height: 40px;
-            background: rgba(30, 30, 50, 0.95); /* Matches navbar */
+            background: rgba(30, 30, 50, 0.95);
+            /* Matches navbar */
             z-index: 1001;
             transition: top 0.3s ease;
         }
 
         .banner-container.scrolled {
-            top: -40px; /* Moves up when banner hides */
+            top: -40px;
+            /* Moves up when banner hides */
         }
 
         /* Banner */
@@ -101,7 +147,8 @@
             width: 100%;
             height: 40px;
             background: rgba(255, 64, 129, 0.2);
-            z-index: 1002; /* Above container */
+            z-index: 1002;
+            /* Above container */
             overflow: hidden;
             display: flex;
             align-items: center;
@@ -121,7 +168,8 @@
         .banner .ticker {
             display: inline-block;
             white-space: nowrap;
-            animation: bannerSlide 30s linear infinite; /* Increased duration for smoothness */
+            animation: bannerSlide 30s linear infinite;
+            /* Increased duration for smoothness */
         }
 
         .banner .ticker span {
@@ -136,7 +184,8 @@
         /* Navbar */
         .navbar {
             position: fixed;
-            top: 40px; /* Below banner when visible */
+            top: 40px;
+            /* Below banner when visible */
             width: 100%;
             padding: 10px 20px;
             background: rgba(30, 30, 50, 0.95);
@@ -147,17 +196,20 @@
         }
 
         .navbar.scrolled {
-            top: 0; /* Moves up when banner hides */
+            top: 0;
+            /* Moves up when banner hides */
         }
 
         .navbar .logo {
             font-family: 'Press Start 2P', cursive;
-            font-size: clamp(1.2em, 3.5vw, 1.8em); /* Slightly smaller max */
+            font-size: clamp(1.2em, 3.5vw, 1.8em);
+            /* Slightly smaller max */
             color: #ff4081;
             text-transform: uppercase;
             display: block;
             margin-bottom: 10px;
-            white-space: nowrap; /* Keeps it on one line */
+            white-space: nowrap;
+            /* Keeps it on one line */
         }
 
         .nav-links {
@@ -185,7 +237,8 @@
         /* Sections */
         section {
             display: none;
-            padding: 180px 20px 60px; /* Increased top padding for banner + navbar */
+            padding: 180px 20px 60px;
+            /* Increased top padding for banner + navbar */
             background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuMjHxIGmVAAAAMElEQVQYV2NgoBJwcnJyanJycvL///8/AQwMTEwsLCwsLCwsLCwsLCwsLCwsLCwsDI4GAV8HAFrpV3gAAAAASUVORK5CYII=') repeat;
             background-size: 16px 16px;
             min-height: 100vh;
@@ -201,7 +254,8 @@
             padding: 0 clamp(20px, 5vw, 50px);
         }
 
-        h1, h2 {
+        h1,
+        h2 {
             font-family: 'Press Start 2P', cursive;
             color: #ff4081;
             text-transform: uppercase;
@@ -248,15 +302,18 @@
         }
 
         #home .hero-section h2 {
-            font-size: clamp(1.5em, 4.5vw, 2.5em); /* Adjusted for mobile */
+            font-size: clamp(1.5em, 4.5vw, 2.5em);
+            /* Adjusted for mobile */
             margin-bottom: 20px;
             text-shadow: 0 0 10px rgba(255, 64, 129, 0.5);
             word-wrap: break-word;
-            white-space: normal; /* Allows controlled line breaks */
+            white-space: normal;
+            /* Allows controlled line breaks */
         }
 
         #home .hero-section p {
-            font-size: clamp(1em, 2.8vw, 1.6em); /* Slightly smaller */
+            font-size: clamp(1em, 2.8vw, 1.6em);
+            /* Slightly smaller */
             color: #b0b0c0;
             margin-bottom: 30px;
             max-width: 800px;
@@ -270,14 +327,18 @@
             align-items: center;
             gap: 10px;
             background: rgba(255, 64, 129, 0.3);
-            padding: clamp(8px, 1.5vw, 12px) clamp(15px, 2.5vw, 25px); /* Adjusted padding */
+            padding: clamp(8px, 1.5vw, 12px) clamp(15px, 2.5vw, 25px);
+            /* Adjusted padding */
             border-radius: 10px;
             cursor: pointer;
             transition: background 0.3s, transform 0.3s;
             position: relative;
-            font-size: clamp(0.9em, 2vw, 1.4em); /* Slightly smaller */
-            max-width: 90%; /* Prevents overflow */
-            margin: 0 auto; /* Centers properly */
+            font-size: clamp(0.9em, 2vw, 1.4em);
+            /* Slightly smaller */
+            max-width: 90%;
+            /* Prevents overflow */
+            margin: 0 auto;
+            /* Centers properly */
         }
 
         #home .hero-section .server-ip:hover {
@@ -307,7 +368,8 @@
             font-size: clamp(1em, 2vw, 1.2em);
             opacity: 0;
             top: 50%;
-            right: clamp(10px, 1.5vw, 15px); /* Adjusted for balance */
+            right: clamp(10px, 1.5vw, 15px);
+            /* Adjusted for balance */
             transform: translateY(-50%);
         }
 
@@ -372,7 +434,8 @@
             justify-content: center;
             gap: 5px;
             overflow: hidden;
-            height: 1.5em; /* Fixed height to clip animation */
+            height: 1.5em;
+            /* Fixed height to clip animation */
             position: relative;
         }
 
@@ -388,7 +451,8 @@
         }
 
         #home .events-section .event-item .countdown span.update {
-            animation: countdownSlide 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Good easing */
+            animation: countdownSlide 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            /* Good easing */
         }
 
         #home .changelog-title {
@@ -397,7 +461,8 @@
         }
 
         #home .changelog-title h1 {
-            font-size: clamp(1.8em, 5vw, 3em); /* Adjusted for mobile */
+            font-size: clamp(1.8em, 5vw, 3em);
+            /* Adjusted for mobile */
         }
 
         #home .changelog-header {
@@ -800,24 +865,29 @@
             }
 
             #store .store-item {
-                min-height: 300px; /* Further reduced for mobile */
+                min-height: 300px;
+                /* Further reduced for mobile */
             }
 
             #wiki .wiki-grid {
-                grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
+                grid-template-columns: repeat(2, 1fr);
+                /* 2 columns on mobile */
             }
 
             #forums .forum-header {
-                flex-direction: column; /* Stack vertically on mobile */
+                flex-direction: column;
+                /* Stack vertically on mobile */
                 align-items: flex-start;
             }
 
             #forums .forum-header .stats {
-                margin-top: 5px; /* Space below category text */
+                margin-top: 5px;
+                /* Space below category text */
             }
         }
     </style>
 </head>
+
 <body>
     <div class="banner-container">
         <div class="banner visible">
@@ -849,7 +919,8 @@
         <div class="container">
             <div class="hero-section">
                 <h2>JOIN THE JOURNEY</h2>
-                <p>Unleash your adventure in the ultimate Minecraft MMORPG—conquer towering floors, forge epic gear, and raid with your crew!</p>
+                <p>Unleash your adventure in the ultimate Minecraft MMORPG—conquer towering floors, forge epic gear, and
+                    raid with your crew!</p>
                 <div class="server-ip" onclick="copyIP(this)">
                     <span>play.towerofbedrock.com</span>
                     <i class="fas fa-copy"></i>
@@ -864,7 +935,8 @@
                         <h3>Double EXP Weekend</h3>
                         <div class="countdown" id="double-exp-countdown">
                             <span class="label">Ends in:</span>
-                            <span class="hours">37</span>:<span class="minutes">00</span>:<span class="seconds">00</span>
+                            <span class="hours">37</span>:<span class="minutes">00</span>:<span
+                                class="seconds">00</span>
                         </div>
                     </div>
                     <div class="event-item">
@@ -872,7 +944,8 @@
                         <h3>Outpost Siege</h3>
                         <div class="countdown" id="outpost-countdown">
                             <span class="label">Starts in:</span>
-                            <span class="hours">06</span>:<span class="minutes">00</span>:<span class="seconds">00</span>
+                            <span class="hours">06</span>:<span class="minutes">00</span>:<span
+                                class="seconds">00</span>
                         </div>
                     </div>
                     <div class="event-item">
@@ -880,7 +953,8 @@
                         <h3>Gem Sale</h3>
                         <div class="countdown" id="gem-sale-countdown">
                             <span class="label">Ends in:</span>
-                            <span class="hours">48</span>:<span class="minutes">00</span>:<span class="seconds">00</span>
+                            <span class="hours">48</span>:<span class="minutes">00</span>:<span
+                                class="seconds">00</span>
                         </div>
                     </div>
                 </div>
@@ -1538,4 +1612,5 @@
         startCountdown('gem-sale-countdown', 48, 'Ends in');
     </script>
 </body>
+
 </html>

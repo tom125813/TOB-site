@@ -4,35 +4,84 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
 const EventsContainer = styled(motion.div)`
-  background: rgba(40, 40, 60, 0.9);
-  padding: 30px;
-  border-radius: 15px;
+  background: linear-gradient(135deg, rgba(30, 35, 45, 0.9) 0%, rgba(40, 45, 60, 0.9) 100%);
+  padding: 50px;
+  border-radius: 20px;
   border: 2px solid rgba(255, 64, 129, 0.4);
   text-align: center;
   margin-bottom: 60px;
-  box-shadow: inset 0 0 20px rgba(255, 64, 129, 0.1);
-  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 15px 50px rgba(255, 64, 129, 0.2);
+  backdrop-filter: blur(20px);
+  transition: all 0.3s ease;
+  
+  @media (max-width: 768px) {
+    padding: 30px 20px;
+    margin-bottom: 40px;
+    border-radius: 15px;
+  }
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 60px rgba(255, 64, 129, 0.3);
+    border-color: rgba(255, 64, 129, 0.6);
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 64, 129, 0.1) 0%, transparent 70%);
+    z-index: -1;
+    animation: pulse 6s ease-in-out infinite;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 64, 129, 0.08), transparent);
+    animation: shimmer 4s ease-in-out infinite;
+  }
+  
+  @keyframes shimmer {
+    0% { left: -100%; }
+    50% { left: 100%; }
+    100% { left: 100%; }
+  }
 `;
 
 const EventsTitle = styled(motion.h2)`
   font-family: 'Press Start 2P', cursive;
-  font-size: clamp(1.4em, 4vw, 1.8em);
+  font-size: clamp(1.5em, 4.5vw, 2.5em);
   color: #ff4081;
-  margin-bottom: 30px;
-  text-shadow: 0 0 5px rgba(255, 64, 129, 0.3);
+  margin-bottom: 40px;
+  text-shadow: 0 0 20px rgba(255, 64, 129, 0.5);
   text-transform: uppercase;
 `;
 
 const EventsGrid = styled(motion.div)`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 25px;
   
-  @media (max-width: 1024px) {
+  @media (max-width: 1200px) {
     grid-template-columns: repeat(2, 1fr);
   }
   
   @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  @media (max-width: 630px) {
     grid-template-columns: 1fr;
   }
 `;
@@ -46,6 +95,9 @@ const EventItem = styled(motion.div)`
   overflow: hidden;
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   
   &::before {
     content: '';
@@ -59,7 +111,7 @@ const EventItem = styled(motion.div)`
   }
   
   &:hover {
-    transform: translateY(-8px) scale(1.02);
+    transform: translateY(-8px);
     box-shadow: 0 15px 40px rgba(255, 64, 129, 0.4);
     border-color: rgba(255, 64, 129, 0.6);
   }
@@ -82,7 +134,7 @@ const EventItem = styled(motion.div)`
     font-family: 'Roboto', sans-serif;
     font-size: clamp(1.3em, 3vw, 1.5em);
     color: #ff4081;
-    margin-bottom: 20px;
+    margin-bottom: auto;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -94,6 +146,7 @@ const Countdown = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  margin-top: 20px;
   
   .label {
     font-size: clamp(0.8em, 1.8vw, 0.9em);
@@ -133,10 +186,24 @@ const Countdown = styled.div`
       color: #ff4081;
       text-shadow: 0 0 5px rgba(255, 64, 129, 0.5);
       line-height: 1;
+      position: relative;
+      overflow: hidden;
+      height: 1.2em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       
       &.update {
-        animation: countdownFlip 0.5s ease;
+        animation: slotMachine 0.6s ease-in-out;
       }
+    }
+    
+    @keyframes slotMachine {
+      0% { transform: translateY(0); }
+      25% { transform: translateY(-100%); opacity: 0; }
+      50% { transform: translateY(100%); opacity: 0; }
+      75% { transform: translateY(50%); opacity: 0.5; }
+      100% { transform: translateY(0); opacity: 1; }
     }
     
     .unit-label {
@@ -161,20 +228,19 @@ const Countdown = styled.div`
 `;
 
 const EventsSection = () => {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.2
-  });
-
   const [countdowns, setCountdowns] = useState({
     doubleExp: { hours: 37, minutes: 0, seconds: 0 },
     outpost: { hours: 6, minutes: 0, seconds: 0 },
-    gemSale: { hours: 48, minutes: 0, seconds: 0 }
+    gemSale: { hours: 48, minutes: 0, seconds: 0 },
+    pvpTournament: { hours: 72, minutes: 30, seconds: 0 }
   });
+
+  const [previousCountdowns, setPreviousCountdowns] = useState({});
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCountdowns(prev => {
+        setPreviousCountdowns(prev);
         const newCountdowns = {};
         
         Object.keys(prev).forEach(key => {
@@ -199,27 +265,6 @@ const EventsSection = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const containerVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5 }
-    }
-  };
-
   const events = [
     {
       icon: 'fas fa-star',
@@ -238,24 +283,24 @@ const EventsSection = () => {
       title: 'Gem Sale',
       countdown: countdowns.gemSale,
       label: 'Ends in:'
+    },
+    {
+      icon: 'fas fa-fist-raised',
+      title: 'PvP Tournament',
+      countdown: countdowns.pvpTournament,
+      label: 'Starts in:'
     }
   ];
 
   return (
-    <EventsContainer
-      ref={ref}
-      variants={containerVariants}
-      initial="hidden"
-      animate={inView ? "visible" : "hidden"}
-    >
-      <EventsTitle variants={itemVariants}>
+    <EventsContainer>
+      <EventsTitle>
         Featured Events
       </EventsTitle>
       <EventsGrid>
         {events.map((event, index) => (
           <EventItem
             key={index}
-            variants={itemVariants}
             whileHover={{ 
               scale: 1.05,
               rotateX: 5,
@@ -269,17 +314,23 @@ const EventsSection = () => {
               <span className="label">{event.label}</span>
               <div className="time-display">
                 <div className="time-unit">
-                  <span className="number">{String(event.countdown.hours).padStart(2, '0')}</span>
+                  <span className={`number ${previousCountdowns[Object.keys(countdowns)[index]]?.hours !== event.countdown.hours ? 'update' : ''}`}>
+                    {String(event.countdown.hours).padStart(2, '0')}
+                  </span>
                   <span className="unit-label">Hours</span>
                 </div>
                 <span className="separator">:</span>
                 <div className="time-unit">
-                  <span className="number">{String(event.countdown.minutes).padStart(2, '0')}</span>
+                  <span className={`number ${previousCountdowns[Object.keys(countdowns)[index]]?.minutes !== event.countdown.minutes ? 'update' : ''}`}>
+                    {String(event.countdown.minutes).padStart(2, '0')}
+                  </span>
                   <span className="unit-label">Min</span>
                 </div>
                 <span className="separator">:</span>
                 <div className="time-unit">
-                  <span className="number">{String(event.countdown.seconds).padStart(2, '0')}</span>
+                  <span className={`number ${previousCountdowns[Object.keys(countdowns)[index]]?.seconds !== event.countdown.seconds ? 'update' : ''}`}>
+                    {String(event.countdown.seconds).padStart(2, '0')}
+                  </span>
                   <span className="unit-label">Sec</span>
                 </div>
               </div>

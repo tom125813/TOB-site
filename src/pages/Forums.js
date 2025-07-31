@@ -1,13 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
 
-const ForumsContainer = styled(motion.div)`
+const ForumsContainer = styled.div`
   min-height: 100vh;
-  padding: 140px 20px 60px;
-  background: linear-gradient(135deg, #0f0f19 0%, #1a1a2e 100%);
+  padding: 160px 20px 60px;
+  background: #1e232d;
   position: relative;
   
   &::before {
@@ -19,7 +17,19 @@ const ForumsContainer = styled(motion.div)`
     height: 100%;
     background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuMjHxIGmVAAAAMElEQVQYV2NgoBJwcnJyanJycvL///8/AQwMTEwsLCwsLCwsLCwsLCwsLCwsLCwsDI4GAV8HAFrpV3gAAAAASUVORK5CYII=') repeat;
     background-size: 16px 16px;
-    opacity: 0.03;
+    opacity: 0.02;
+    z-index: -1;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 80%, rgba(255, 64, 129, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 64, 129, 0.03) 0%, transparent 50%);
     z-index: -1;
   }
 `;
@@ -34,93 +44,7 @@ const Container = styled.div`
   }
 `;
 
-const ForumHeader = styled(motion.div)`
-  text-align: center;
-  margin-bottom: 50px;
-  
-  .header-icon {
-    font-size: 4em;
-    color: #ff4081;
-    margin-bottom: 20px;
-    text-shadow: 0 0 30px rgba(255, 64, 129, 0.6);
-    animation: pulse 3s ease-in-out infinite;
-  }
-  
-  h1 {
-    font-family: 'Press Start 2P', cursive;
-    font-size: clamp(2em, 6vw, 3.5em);
-    color: #ff4081;
-    text-transform: uppercase;
-    text-shadow: 0 0 20px rgba(255, 64, 129, 0.5);
-    margin-bottom: 20px;
-    background: linear-gradient(45deg, #ff4081, #e03570, #ff4081);
-    background-size: 200% 200%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: gradientShift 3s ease infinite;
-  }
-  
-  p {
-    font-size: clamp(1.1em, 2.5vw, 1.4em);
-    color: #b0b0c0;
-    font-weight: 500;
-    max-width: 600px;
-    margin: 0 auto;
-    line-height: 1.6;
-  }
-  
-  @keyframes gradientShift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-  }
-`;
-
-const ForumStats = styled(motion.div)`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  margin-bottom: 50px;
-  
-  .stat-card {
-    background: linear-gradient(135deg, rgba(25, 25, 40, 0.9), rgba(35, 35, 55, 0.9));
-    border: 1px solid rgba(255, 64, 129, 0.2);
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
-    
-    &:hover {
-      border-color: rgba(255, 64, 129, 0.4);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(255, 64, 129, 0.15);
-    }
-    
-    .stat-icon {
-      font-size: 2em;
-      color: #ff4081;
-      margin-bottom: 10px;
-      text-shadow: 0 0 15px rgba(255, 64, 129, 0.4);
-    }
-    
-    .stat-number {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.8em;
-      color: #ff4081;
-      font-weight: 700;
-      margin-bottom: 5px;
-    }
-    
-    .stat-label {
-      font-size: 0.9em;
-      color: #b0b0c0;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-  }
-`;
-
-const CategoriesGrid = styled(motion.div)`
+const CategoriesGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   gap: 25px;
@@ -131,36 +55,51 @@ const CategoriesGrid = styled(motion.div)`
   }
 `;
 
-const CategoryCard = styled(motion.div)`
-  background: linear-gradient(135deg, rgba(25, 25, 40, 0.95), rgba(35, 35, 55, 0.95));
-  border: 1px solid rgba(255, 64, 129, 0.2);
-  border-radius: 16px;
+const CategoryCard = styled.div`
+  background: linear-gradient(135deg, rgba(30, 35, 45, 0.9) 0%, rgba(40, 45, 60, 0.9) 100%);
+  border: 2px solid rgba(255, 64, 129, 0.4);
+  border-radius: 20px;
   padding: 30px;
-  transition: all 0.4s ease;
+  transition: all 0.3s ease;
   cursor: pointer;
-  backdrop-filter: blur(15px);
+  backdrop-filter: blur(20px);
   position: relative;
   overflow: hidden;
+  box-shadow: 0 15px 50px rgba(255, 64, 129, 0.2);
   
   &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 64, 129, 0.1) 0%, transparent 70%);
+    z-index: -1;
+    animation: pulse 6s ease-in-out infinite;
+  }
+  
+  &::after {
     content: '';
     position: absolute;
     top: 0;
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 64, 129, 0.1), transparent);
-    transition: left 0.6s ease;
+    background: linear-gradient(90deg, transparent, rgba(255, 64, 129, 0.08), transparent);
+    animation: shimmer 4s ease-in-out infinite;
   }
   
-  &:hover::before {
-    left: 100%;
+  @keyframes shimmer {
+    0% { left: -100%; }
+    50% { left: 100%; }
+    100% { left: 100%; }
   }
   
   &:hover {
-    transform: translateY(-8px);
-    border-color: rgba(255, 64, 129, 0.5);
-    box-shadow: 0 15px 40px rgba(255, 64, 129, 0.2);
+    transform: translateY(-5px);
+    border-color: rgba(255, 64, 129, 0.6);
+    box-shadow: 0 20px 60px rgba(255, 64, 129, 0.3);
   }
   
   .category-header {
@@ -255,12 +194,51 @@ const CategoryCard = styled(motion.div)`
   }
 `;
 
-const RecentActivity = styled(motion.div)`
-  background: linear-gradient(135deg, rgba(25, 25, 40, 0.95), rgba(35, 35, 55, 0.95));
-  border: 1px solid rgba(255, 64, 129, 0.2);
-  border-radius: 16px;
+const RecentActivity = styled.div`
+  background: linear-gradient(135deg, rgba(30, 35, 45, 0.9) 0%, rgba(40, 45, 60, 0.9) 100%);
+  border: 2px solid rgba(255, 64, 129, 0.4);
+  border-radius: 20px;
   padding: 30px;
-  backdrop-filter: blur(15px);
+  backdrop-filter: blur(20px);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 15px 50px rgba(255, 64, 129, 0.2);
+  transition: all 0.3s ease;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 64, 129, 0.1) 0%, transparent 70%);
+    z-index: -1;
+    animation: pulse 6s ease-in-out infinite;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 64, 129, 0.08), transparent);
+    animation: shimmer 4s ease-in-out infinite;
+  }
+  
+  @keyframes shimmer {
+    0% { left: -100%; }
+    50% { left: 100%; }
+    100% { left: 100%; }
+  }
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 60px rgba(255, 64, 129, 0.3);
+    border-color: rgba(255, 64, 129, 0.6);
+  }
   
   .activity-header {
     display: flex;
@@ -270,26 +248,34 @@ const RecentActivity = styled(motion.div)`
     
     h2 {
       font-family: 'Press Start 2P', cursive;
-      font-size: 1.4em;
+      font-size: clamp(1.2em, 3vw, 1.6em);
       color: #ff4081;
       margin: 0;
       text-transform: uppercase;
+      text-shadow: 0 0 15px rgba(255, 64, 129, 0.5);
     }
     
     .view-all {
-      color: #b0b0c0;
+      color: #e0e0e0;
       text-decoration: none;
       font-size: 0.9em;
-      transition: color 0.3s ease;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      padding: 8px 15px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 64, 129, 0.3);
       
       &:hover {
         color: #ff4081;
+        background: rgba(255, 64, 129, 0.1);
+        border-color: rgba(255, 64, 129, 0.5);
+        transform: translateX(3px);
       }
     }
   }
 `;
 
-const ActivityItem = styled(motion.div)`
+const ActivityItem = styled.div`
   display: flex;
   align-items: center;
   padding: 20px 0;
@@ -361,18 +347,6 @@ const ActivityItem = styled(motion.div)`
 `;
 
 const Forums = () => {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1
-  });
-
-  const forumStats = [
-    { icon: 'fas fa-comments', number: '1,234', label: 'Total Threads' },
-    { icon: 'fas fa-reply', number: '15,678', label: 'Total Posts' },
-    { icon: 'fas fa-users', number: '2,456', label: 'Members' },
-    { icon: 'fas fa-clock', number: '24/7', label: 'Active' }
-  ];
-
   const forumCategories = [
     {
       id: 'announcements',
@@ -469,55 +443,15 @@ const Forums = () => {
     }
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1 }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1 }
-  };
-
   return (
-    <ForumsContainer
-      ref={ref}
-      variants={containerVariants}
-      initial="hidden"
-      animate={inView ? "visible" : "hidden"}
-    >
+    <ForumsContainer>
       <Container>
-        <ForumHeader variants={itemVariants}>
-          <div className="header-icon">
-            <i className="fas fa-comments"></i>
-          </div>
-          <h1>Community Forums</h1>
-          <p>Connect with fellow adventurers, share strategies, and discuss everything Tower of Bedrock</p>
-        </ForumHeader>
-
-        <ForumStats variants={itemVariants}>
-          {forumStats.map((stat, index) => (
-            <div key={index} className="stat-card">
-              <div className="stat-icon">
-                <i className={stat.icon}></i>
-              </div>
-              <div className="stat-number">{stat.number}</div>
-              <div className="stat-label">{stat.label}</div>
-            </div>
-          ))}
-        </ForumStats>
-        
         <CategoriesGrid>
           {forumCategories.map((category, index) => (
             <CategoryCard
               key={category.id}
-              variants={itemVariants}
               as={Link}
               to={`/forums/${category.id}`}
-              whileHover={{ 
-                y: -8,
-                transition: { duration: 0.3 }
-              }}
             >
               <div className="category-header">
                 <div className="category-icon">
@@ -548,7 +482,7 @@ const Forums = () => {
           ))}
         </CategoriesGrid>
 
-        <RecentActivity variants={itemVariants}>
+        <RecentActivity>
           <div className="activity-header">
             <h2>Recent Activity</h2>
             <Link to="/forums/recent" className="view-all">View All →</Link>
@@ -556,7 +490,6 @@ const Forums = () => {
           {recentActivity.map((activity, index) => (
             <ActivityItem
               key={index}
-              variants={itemVariants}
               as={Link}
               to={`/forums/thread/${activity.title.toLowerCase().replace(/\s+/g, '-')}`}
             >

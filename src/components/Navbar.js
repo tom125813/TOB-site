@@ -9,30 +9,34 @@ const NavContainer = styled(motion.nav)`
   top: 40px;
   width: 100%;
   padding: 0;
-  background: linear-gradient(135deg, rgba(15, 15, 25, 0.98), rgba(25, 25, 40, 0.98));
-  border-bottom: 1px solid rgba(255, 64, 129, 0.3);
+  background: rgba(30, 35, 45, 0.95);
+  border-bottom: 1px solid rgba(255, 64, 129, 0.2);
   z-index: 1000;
-  transition: top 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   backdrop-filter: blur(20px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transform: translateY(0);
   
   &.scrolled {
     top: 0;
+    background: rgba(30, 35, 45, 0.98);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    transform: translateY(0);
   }
 `;
 
 const NavContent = styled.div`
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  display: flex;
   align-items: center;
-  padding: 0 40px;
-  height: 70px;
+  justify-content: space-between;
+  padding: 0 30px;
+  height: 85px;
+  max-width: 1400px;
+  margin: 0 auto;
   
   @media (max-width: 768px) {
-    display: flex;
-    justify-content: space-between;
     padding: 0 20px;
-    height: 60px;
+    height: 70px;
   }
 `;
 
@@ -49,28 +53,34 @@ const LogoSection = styled(Link)`
 `;
 
 const LogoIcon = styled.div`
-  width: 45px;
-  height: 45px;
+  width: 50px;
+  height: 50px;
   background: linear-gradient(135deg, #ff4081, #e03570);
-  border-radius: 8px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5em;
+  font-size: 1.8em;
   color: white;
   font-weight: 700;
-  box-shadow: 0 0 20px rgba(255, 64, 129, 0.4);
+  box-shadow: 0 0 25px rgba(255, 64, 129, 0.4);
   position: relative;
+  transition: all 0.3s ease;
   
   &::after {
     content: '';
     position: absolute;
     inset: -2px;
     background: linear-gradient(45deg, #ff4081, #e03570, #ff4081);
-    border-radius: 10px;
+    border-radius: 14px;
     z-index: -1;
     opacity: 0;
     transition: opacity 0.3s ease;
+  }
+  
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(255, 64, 129, 0.6);
   }
   
   &:hover::after {
@@ -84,33 +94,15 @@ const LogoIcon = styled.div`
   }
 `;
 
-const LogoText = styled.div`
-  h1 {
-    font-family: 'Press Start 2P', cursive;
-    font-size: clamp(1em, 2.5vw, 1.3em);
-    color: #ff4081;
-    text-transform: uppercase;
-    margin: 0;
-    text-shadow: 0 0 10px rgba(255, 64, 129, 0.5);
-    line-height: 1.2;
-  }
-  
-  .subtitle {
-    font-family: 'Roboto', sans-serif;
-    font-size: 0.7em;
-    color: #b0b0c0;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-top: 2px;
-  }
-`;
+
 
 const NavLinks = styled.div`
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 25px;
+  height: 50px;
   
-  @media (max-width: 968px) {
+  @media (max-width: 1350px) {
     display: none;
   }
 `;
@@ -118,19 +110,21 @@ const NavLinks = styled.div`
 const NavLink = styled(Link)`
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 20px;
-  color: #e0e0e0;
+  gap: 10px;
+  padding: 12px 25px;
+  height: 50px;
+  color: #b0b0c0;
   text-decoration: none;
   font-family: 'Roboto', sans-serif;
-  font-size: 0.95em;
-  font-weight: 500;
+  font-size: 1em;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
+  letter-spacing: 0.8px;
+  border-radius: 12px;
+  transition: all 0.2s ease;
   position: relative;
   overflow: hidden;
+  border: 2px solid transparent;
   
   &::before {
     content: '';
@@ -139,30 +133,57 @@ const NavLink = styled(Link)`
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 64, 129, 0.2), transparent);
-    transition: left 0.5s ease;
+    background: linear-gradient(90deg, transparent, rgba(255, 64, 129, 0.3), transparent);
+    transition: left 0.4s ease;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba(255, 64, 129, 0.4), transparent);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.3s ease;
   }
   
   &:hover::before {
     left: 100%;
   }
   
+  &:hover::after {
+    width: 100px;
+    height: 100px;
+  }
+  
   &:hover,
   &.active {
     color: #ff4081;
     background: rgba(255, 64, 129, 0.1);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 15px rgba(255, 64, 129, 0.2);
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(255, 64, 129, 0.3);
+    border-color: rgba(255, 64, 129, 0.4);
+    text-shadow: 0 0 8px rgba(255, 64, 129, 0.6);
   }
   
   &.active {
     background: rgba(255, 64, 129, 0.15);
-    box-shadow: 0 0 20px rgba(255, 64, 129, 0.3);
+    box-shadow: 0 6px 20px rgba(255, 64, 129, 0.4);
+    border-color: rgba(255, 64, 129, 0.6);
   }
   
   i {
     font-size: 1.1em;
-    opacity: 0.8;
+    opacity: 0.9;
+    transition: all 0.2s ease;
+  }
+  
+  &:hover i {
+    transform: scale(1.2) rotate(5deg);
+    text-shadow: 0 0 10px rgba(255, 64, 129, 0.8);
   }
 `;
 
@@ -170,54 +191,108 @@ const UserSection = styled.div`
   display: flex;
   align-items: center;
   gap: 15px;
-  justify-self: end;
+  height: 50px;
 `;
 
 const AuthButtons = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
+  
+  @media (max-width: 480px) {
+    display: none;
+  }
 `;
 
 const AuthButton = styled(Link)`
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 18px;
+  gap: 10px;
+  padding: 12px 20px;
+  height: 50px;
   text-decoration: none;
   font-family: 'Roboto', sans-serif;
   font-size: 0.9em;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border-radius: 6px;
-  transition: all 0.3s ease;
+  letter-spacing: 0.8px;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.4s ease;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba(255, 64, 129, 0.3), transparent);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.3s ease;
+  }
+  
+  &:hover::before {
+    left: 100%;
+  }
+  
+  &:hover::after {
+    width: 80px;
+    height: 80px;
+  }
   
   &.login {
     color: #e0e0e0;
-    border: 1px solid rgba(255, 64, 129, 0.3);
+    background: rgba(255, 64, 129, 0.1);
+    border: 2px solid rgba(255, 64, 129, 0.3);
     
     &:hover {
       color: #ff4081;
-      border-color: rgba(255, 64, 129, 0.6);
-      background: rgba(255, 64, 129, 0.1);
+      border-color: rgba(255, 64, 129, 0.8);
+      background: rgba(255, 64, 129, 0.2);
+      transform: scale(1.05);
+      box-shadow: 0 8px 25px rgba(255, 64, 129, 0.4);
+      text-shadow: 0 0 8px rgba(255, 64, 129, 0.6);
     }
   }
   
   &.register {
     color: white;
     background: linear-gradient(135deg, #ff4081, #e03570);
-    border: 1px solid #ff4081;
-    box-shadow: 0 0 15px rgba(255, 64, 129, 0.3);
+    border: 2px solid #ff4081;
+    box-shadow: 0 4px 15px rgba(255, 64, 129, 0.3);
     
     &:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 20px rgba(255, 64, 129, 0.4);
+      transform: scale(1.05);
+      box-shadow: 0 10px 35px rgba(255, 64, 129, 0.6);
+      background: linear-gradient(135deg, #ff5a92, #e8467a);
+      border-color: #ff5a92;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
     }
   }
   
   i {
-    font-size: 1em;
+    font-size: 1.1em;
+    transition: all 0.2s ease;
+  }
+  
+  &:hover i {
+    transform: scale(1.3) rotate(10deg);
+    text-shadow: 0 0 10px currentColor;
   }
 `;
 
@@ -283,7 +358,7 @@ const MobileMenuButton = styled.button`
     background: rgba(255, 64, 129, 0.1);
   }
   
-  @media (max-width: 968px) {
+  @media (max-width: 1350px) {
     display: block;
   }
 `;
@@ -293,12 +368,12 @@ const MobileMenu = styled(motion.div)`
   top: 100%;
   left: 0;
   right: 0;
-  background: linear-gradient(135deg, rgba(15, 15, 25, 0.98), rgba(25, 25, 40, 0.98));
+  background: rgba(30, 35, 45, 0.98);
   backdrop-filter: blur(20px);
-  border-top: 1px solid rgba(255, 64, 129, 0.3);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  border-top: 1px solid rgba(255, 64, 129, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   
-  @media (min-width: 969px) {
+  @media (min-width: 1351px) {
     display: none;
   }
 `;
@@ -315,11 +390,11 @@ const MobileNavLink = styled(Link)`
   align-items: center;
   gap: 12px;
   padding: 15px 20px;
-  color: #e0e0e0;
+  color: #b0b0c0;
   text-decoration: none;
   font-family: 'Roboto', sans-serif;
   font-size: 1em;
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   border-radius: 8px;
@@ -328,7 +403,7 @@ const MobileNavLink = styled(Link)`
   &:hover,
   &.active {
     color: #ff4081;
-    background: rgba(255, 64, 129, 0.1);
+    background: rgba(255, 64, 129, 0.08);
   }
   
   i {
@@ -360,7 +435,6 @@ const Navbar = () => {
     { path: '/forums', label: 'Forums', icon: 'fas fa-comments' },
     { path: '/wiki', label: 'Wiki', icon: 'fas fa-book' },
     { path: '/leaderboards', label: 'Leaderboards', icon: 'fas fa-trophy' },
-    { path: '/stats', label: 'Stats', icon: 'fas fa-chart-bar' },
     { path: '/store', label: 'Store', icon: 'fas fa-shopping-cart' }
   ];
 
@@ -374,9 +448,6 @@ const Navbar = () => {
       <NavContent>
         <LogoSection to="/">
           <LogoIcon>T</LogoIcon>
-          <LogoText>
-            <h1>Tower of<br />Bedrock</h1>
-          </LogoText>
         </LogoSection>
 
         <NavLinks>
@@ -441,6 +512,25 @@ const Navbar = () => {
                 {item.label}
               </MobileNavLink>
             ))}
+            
+            {!state.isAuthenticated && (
+              <>
+                <MobileNavLink
+                  to="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <i className="fas fa-sign-in-alt"></i>
+                  Login
+                </MobileNavLink>
+                <MobileNavLink
+                  to="/register"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <i className="fas fa-user-plus"></i>
+                  Sign Up
+                </MobileNavLink>
+              </>
+            )}
           </MobileNavLinks>
         </MobileMenu>
       )}

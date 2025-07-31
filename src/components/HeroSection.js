@@ -4,15 +4,31 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
 const HeroContainer = styled(motion.div)`
-  background: radial-gradient(circle, rgba(255, 64, 129, 0.2) 0%, transparent 100%);
-  padding: 40px;
-  border-radius: 15px;
+  background: linear-gradient(135deg, rgba(30, 35, 45, 0.9) 0%, rgba(40, 45, 60, 0.9) 100%);
+  padding: 50px;
+  border-radius: 20px;
   border: 2px solid rgba(255, 64, 129, 0.4);
   text-align: center;
   margin-bottom: 60px;
+  margin-top: -20px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 0 30px rgba(255, 64, 129, 0.3);
+  box-shadow: 0 15px 50px rgba(255, 64, 129, 0.2);
+  backdrop-filter: blur(20px);
+  transition: all 0.3s ease;
+  
+  @media (max-width: 768px) {
+    padding: 30px 20px;
+    margin-bottom: 40px;
+    margin-top: -10px;
+    border-radius: 15px;
+  }
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 60px rgba(255, 64, 129, 0.3);
+    border-color: rgba(255, 64, 129, 0.6);
+  }
   
   &::before {
     content: '';
@@ -21,9 +37,26 @@ const HeroContainer = styled(motion.div)`
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle, rgba(255, 64, 129, 0.2) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255, 64, 129, 0.15) 0%, transparent 70%);
     z-index: -1;
     animation: pulse 4s ease-in-out infinite;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 64, 129, 0.1), transparent);
+    animation: shimmer 3s ease-in-out infinite;
+  }
+  
+  @keyframes shimmer {
+    0% { left: -100%; }
+    50% { left: 100%; }
+    100% { left: 100%; }
   }
 `;
 
@@ -38,43 +71,71 @@ const HeroTitle = styled(motion.h2)`
 
 const HeroDescription = styled(motion.p)`
   font-size: clamp(1em, 2.8vw, 1.6em);
-  color: #b0b0c0;
+  color: #e0e0e0;
   margin-bottom: 30px;
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
   font-weight: 500;
+  line-height: 1.6;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 `;
 
 const ServerIP = styled(motion.div)`
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  background: rgba(255, 64, 129, 0.3);
-  padding: clamp(8px, 1.5vw, 12px) clamp(15px, 2.5vw, 25px);
-  border-radius: 10px;
+  gap: 12px;
+  background: linear-gradient(135deg, rgba(255, 64, 129, 0.2), rgba(255, 64, 129, 0.3));
+  padding: clamp(12px, 1.5vw, 16px) clamp(20px, 2.5vw, 30px);
+  border-radius: 15px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   position: relative;
-  font-size: clamp(0.9em, 2vw, 1.4em);
-  border: 1px solid rgba(255, 64, 129, 0.5);
+  font-size: clamp(1em, 2vw, 1.4em);
+  border: 2px solid rgba(255, 64, 129, 0.5);
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+  }
+  
+  &:hover::before {
+    left: 100%;
+  }
   
   &:hover {
-    background: rgba(255, 64, 129, 0.5);
-    transform: scale(1.05);
-    box-shadow: 0 0 20px rgba(255, 64, 129, 0.6);
+    background: linear-gradient(135deg, rgba(255, 64, 129, 0.4), rgba(255, 64, 129, 0.5));
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 10px 30px rgba(255, 64, 129, 0.4);
+    border-color: rgba(255, 64, 129, 0.8);
   }
   
   span {
     font-family: 'Roboto', sans-serif;
-    color: #ff4081;
-    font-weight: 600;
+    color: white;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: 0.5px;
   }
   
   i {
-    color: #ff4081;
-    font-size: clamp(1em, 2vw, 1.2em);
-    transition: opacity 0.3s, transform 0.3s;
+    color: white;
+    font-size: clamp(1.1em, 2vw, 1.3em);
+    transition: all 0.2s ease;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    margin-left: 8px;
+  }
+  
+  &:hover i {
+    transform: scale(1.2) rotate(10deg);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
   }
   
   &.copied i.fa-copy {
@@ -84,17 +145,17 @@ const ServerIP = styled(motion.div)`
   
   .tick {
     position: absolute;
-    color: #ff4081;
-    font-size: clamp(1em, 2vw, 1.2em);
+    color: white;
+    font-size: clamp(1.1em, 2vw, 1.3em);
     opacity: 0;
     top: 50%;
-    right: clamp(15px, 2.5vw, 25px);
+    right: clamp(20px, 2.5vw, 30px);
     transform: translateY(-50%);
     display: flex;
     align-items: center;
     justify-content: center;
-    width: clamp(1em, 2vw, 1.2em);
-    height: clamp(1em, 2vw, 1.2em);
+    width: clamp(1.1em, 2vw, 1.3em);
+    height: clamp(1.1em, 2vw, 1.3em);
     
     &.show {
       opacity: 1;
@@ -105,25 +166,21 @@ const ServerIP = styled(motion.div)`
   @keyframes checkmark {
     0% {
       opacity: 0;
-      transform: translateY(-50%) scale(0.5);
+      transform: translateY(-50%) scale(0.5) rotate(-180deg);
     }
     50% {
       opacity: 1;
-      transform: translateY(-50%) scale(1.2);
+      transform: translateY(-50%) scale(1.3) rotate(0deg);
     }
     100% {
       opacity: 1;
-      transform: translateY(-50%) scale(1);
+      transform: translateY(-50%) scale(1) rotate(0deg);
     }
   }
 `;
 
 const HeroSection = () => {
   const [copied, setCopied] = useState(false);
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.3
-  });
 
   const copyIP = () => {
     navigator.clipboard.writeText('play.towerofbedrock.com');
@@ -131,41 +188,15 @@ const HeroSection = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        duration: 0.6,
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.4, ease: "easeOut" }
-    }
-  };
-
   return (
-    <HeroContainer
-      ref={ref}
-      variants={containerVariants}
-      initial="hidden"
-      animate={inView ? "visible" : "hidden"}
-    >
-      <HeroTitle variants={itemVariants}>
+    <HeroContainer>
+      <HeroTitle>
         JOIN THE JOURNEY
       </HeroTitle>
-      <HeroDescription variants={itemVariants}>
+      <HeroDescription>
         Unleash your adventure in the ultimate Minecraft MMORPG—conquer towering floors, forge epic gear, and raid with your crew!
       </HeroDescription>
       <ServerIP
-        variants={itemVariants}
         onClick={copyIP}
         className={copied ? 'copied' : ''}
         whileHover={{ scale: 1.05 }}
